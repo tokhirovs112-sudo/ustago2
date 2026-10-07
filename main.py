@@ -17,7 +17,6 @@ WEBHOOK_URL = f"{WEBHOOK_HOST}{WEBHOOK_PATH}"
 
 @app.on_event("startup")
 async def on_startup():
-    # Sayt yoqilganda Telegramga Webhook ulaymiz
     await bot.set_webhook(WEBHOOK_URL)
     print(f"Webhook o'rnatildi: {WEBHOOK_URL}")
 
@@ -26,7 +25,6 @@ async def on_shutdown():
     await bot.delete_webhook()
     await bot.session.close()
 
-# Telegramdan keladigan xabarlarni qabul qiluvchi endpoint
 @app.post(WEBHOOK_PATH)
 async def bot_webhook(request: Request):
     json_data = await request.json()
@@ -36,8 +34,18 @@ async def bot_webhook(request: Request):
 
 @app.get("/")
 async def home(request: Request):
-    # Kesh xatoligini oldini oluvchi yangi va to'g'ri TemplateResponse formati
-    return templates.TemplateResponse(request, "index.html", {"request": request})
+    # index.html talab qilayotgan categories ma'lumotini shu yerga qo'shamiz
+    categories_data = {
+        "Maishiy texnika": "Wrench",
+        "Santexnika": "Droplet",
+        "Elektrik": "Zap",
+        "Konditsioner": "Wind"
+    }
+    return templates.TemplateResponse(
+        request, 
+        "index.html", 
+        {"request": request, "categories": categories_data}
+    )
 
 # API Endpoints
 @app.get("/api/services")
