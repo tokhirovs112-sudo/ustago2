@@ -3,8 +3,11 @@ from aiogram import Bot, Dispatcher, types
 from aiogram.filters import CommandStart
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, WebAppInfo
 
+# Telegram Bot Tokeningiz
 BOT_TOKEN = "8994199161:AAHctwnIncMvmhaRwwThT-d4nsGKLExbmcw"
-WEBAPP_URL = "https://ustagoorg.onrender.com"  # O'z Render havolangiz
+
+# Render'dagi o'z aniq havolangizni yozing (oxirida / belgisi bo'lmasin)
+WEBAPP_URL = "https://ustagoorg.onrender.com"
 
 bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher()
