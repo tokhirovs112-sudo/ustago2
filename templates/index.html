@@ -179,11 +179,8 @@
     <!-- Scriptlar -->
     <script>
         let wizardAnswers = {};
-
-        // Ma'lumotlar bazasidagi barcha otzivlar (Jinja2 orqali uzatiladi)
         const REVIEWS_DB = {{ reviews_db | tojson }};
 
-        // Bo'limlarga mos brendlar
         const CATEGORY_BRANDS = {
             "Maishiy texnika": ["Bosch", "Beko", "Artel", "LG", "Samsung", "Haier", "Boshqa brend"],
             "Elektronika va Gadjetlar": ["Apple", "Samsung", "Xiaomi", "Lenovo", "HP", "Asus", "Boshqa brend"],
@@ -194,50 +191,55 @@
             const category = document.getElementById('category-select').value;
             const serviceSelect = document.getElementById('service-select');
             const brandSelect = document.getElementById('brand-select');
-            const container = document.getElementById('technicians-list');
             const customContainer = document.getElementById('custom-problem-container');
             const phoneWizard = document.getElementById('phone-wizard');
+            const container = document.getElementById('technicians-list');
 
+            // Clear & Reset UI Elements
             serviceSelect.innerHTML = '<option value="">-- Xizmatni tanlang --</option>';
             brandSelect.innerHTML = '<option value="">-- Brendni tanlang --</option>';
-
-            serviceSelect.disabled = !category;
             brandSelect.disabled = true;
             customContainer.classList.add('hidden');
             phoneWizard.classList.add('hidden');
+            container.innerHTML = `<div class="text-center py-8 bg-slate-50 rounded-xl border border-dashed border-slate-200"><p class="text-slate-400 text-sm">Xizmat turini tanlasangiz, saralangan ustalar ro'yxati shu yerda ko'rinadi.</p></div>`;
 
-            container.innerHTML = `
-                <div class="text-center py-8 bg-slate-50 rounded-xl border border-dashed border-slate-200">
-                    <p class="text-slate-400 text-sm">Xizmat turini tanlasangiz, saralangan ustalar ro'yxati shu yerda ko'rinadi.</p>
-                </div>`;
+            if (!category) {
+                serviceSelect.disabled = true;
+                return;
+            }
 
-            if (!category) return;
+            // Populate Brands
+            if (CATEGORY_BRANDS[category]) {
+                CATEGORY_BRANDS[category].forEach(brand => {
+                    const opt = document.createElement('option');
+                    opt.value = brand;
+                    opt.innerText = brand;
+                    brandSelect.appendChild(opt);
+                });
+            }
 
-            const brands = CATEGORY_BRANDS[category] || ["Boshqa brend"];
-            brands.forEach(b => {
+            // Fetch Services dynamically
+            const res = await fetch(`/api/services?category=${encodeURIComponent(category)}`);
+            const data = await res.json();
+
+            data.services.forEach(service => {
                 const opt = document.createElement('option');
-                opt.value = b;
-                opt.textContent = b;
-                brandSelect.appendChild(opt);
-            });
-
-            const res = await fetch(`/get-services?category=${encodeURIComponent(category)}`);
-            const services = await res.json();
-
-            services.forEach(serv => {
-                const opt = document.createElement('option');
-                opt.value = serv;
-                opt.textContent = serv;
+                opt.value = service;
+                opt.innerText = service;
                 serviceSelect.appendChild(opt);
             });
+
+            serviceSelect.disabled = false;
         }
 
         function onServiceChange() {
+            const category = document.getElementById('category-select').value;
             const service = document.getElementById('service-select').value;
+            const brandSelect = document.getElementById('brand-select');
             const customContainer = document.getElementById('custom-problem-container');
             const phoneWizard = document.getElementById('phone-wizard');
 
-            document.getElementById('brand-select').disabled = !service;
+            brandSelect.disabled = !service;
 
             if (service.includes("Boshqa")) {
                 customContainer.classList.remove('hidden');
@@ -245,7 +247,7 @@
                 customContainer.classList.add('hidden');
             }
 
-            if (service.includes("Smartfonlar")) {
+            if (service === "Smartfonlar va Mobil telefonlar") {
                 phoneWizard.classList.remove('hidden');
                 resetWizard();
             } else {
@@ -255,89 +257,41 @@
             fetchTechnicians();
         }
 
-        function resetWizard() {
-            wizardAnswers = {};
-            document.getElementById('wizard-step-1').classList.remove('hidden');
-            document.getElementById('wizard-step-2').classList.add('hidden');
-            document.getElementById('wizard-step-3').classList.add('hidden');
-            document.getElementById('wizard-result').classList.add('hidden');
-            document.getElementById('wizard-step-badge').textContent = "1 / 3 - Savol";
-        }
-
-        function answerQuestion(step, answer) {
-            wizardAnswers[step] = answer;
-
-            if (step === 1) {
-                document.getElementById('wizard-step-1').classList.add('hidden');
-                document.getElementById('wizard-step-2').classList.remove('hidden');
-                document.getElementById('wizard-step-badge').textContent = "2 / 3 - Savol";
-            } else if (step === 2) {
-                document.getElementById('wizard-step-2').classList.add('hidden');
-                document.getElementById('wizard-step-3').classList.remove('hidden');
-                document.getElementById('wizard-step-badge').textContent = "3 / 3 - Savol";
-            } else if (step === 3) {
-                document.getElementById('wizard-step-3').classList.add('hidden');
-                document.getElementById('wizard-result').classList.remove('hidden');
-                document.getElementById('wizard-step-badge').textContent = "Tugallandi";
-
-                let summary = "";
-                if (wizardAnswers[1] === "Ha") summary += "• Suv/namlik tegishi kuzatilgan. ";
-                if (wizardAnswers[2] === "Ha") summary += "• Dasturiy sekinlashuv yoki qotish bor. ";
-                if (wizardAnswers[3] === "Ha") summary += "• Ekran/korpus shikastlangan.";
-                if (!summary) summary = "• Jiddiy tashqi shikastlanishlarsiz umumiy profilaktika kerak.";
-
-                document.getElementById('wizard-summary-text').textContent = summary;
-            }
-        }
-
         async function fetchTechnicians() {
             const category = document.getElementById('category-select').value;
             const service = document.getElementById('service-select').value;
-            const brand = document.getElementById('brand-select').value;
             const container = document.getElementById('technicians-list');
 
             if (!category || !service) return;
 
-            const url = `/get-technicians?category=${encodeURIComponent(category)}&service=${encodeURIComponent(service)}&brand=${encodeURIComponent(brand)}`;
-            const res = await fetch(url);
-            const technicians = await res.json();
+            const res = await fetch(`/api/technicians?category=${encodeURIComponent(category)}&service=${encodeURIComponent(service)}`);
+            const data = await res.json();
 
-            if (technicians.length === 0) {
-                container.innerHTML = `
-                    <div class="text-center py-6 bg-amber-50 text-amber-700 rounded-xl border border-amber-200 text-sm font-medium">
-                        Ushbu yo'nalish bo'yicha usta topilmadi.
-                    </div>`;
+            if (data.workers.length === 0) {
+                container.innerHTML = `<div class="p-6 text-center text-slate-500 text-sm bg-slate-50 rounded-xl">Hozircha ushbu yo'nalish bo'yicha bo'sh ustalar topilmadi.</div>`;
                 return;
             }
 
-            let html = `<h4 class="text-sm font-bold text-slate-700 mb-3">Mavjud Ustalar (${brand ? brand : 'Barcha brendlar'}):</h4><div class="grid grid-cols-1 md:grid-cols-2 gap-4">`;
-            technicians.forEach(tech => {
-                const name = tech[0];
-                const rating = tech[1];
-                const jobs = tech[2];
-                const dist = tech[3];
-
+            let html = '<div class="grid grid-cols-1 md:grid-cols-2 gap-4">';
+            data.workers.forEach(w => {
                 html += `
-                    <div class="bg-white border border-slate-200 p-4 rounded-2xl shadow-xs hover:shadow-md transition flex flex-col justify-between space-y-3">
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition flex flex-col justify-between space-y-3">
                         <div class="flex justify-between items-start">
                             <div>
-                                <h5 class="font-bold text-slate-800 text-base flex items-center gap-1.5">👨‍🔧 ${name}</h5>
-                                <p class="text-xs text-slate-500 mt-1">Bajarilgan ishlar: <span class="font-semibold text-slate-700">${jobs} ta</span></p>
+                                <h4 class="font-bold text-slate-800 text-base">${w.name}</h4>
+                                <div class="flex items-center space-x-2 text-xs text-slate-500 mt-1">
+                                    <span class="text-amber-500 font-bold">⭐ ${w.rating}</span>
+                                    <span>•</span>
+                                    <span>${w.reviews_count} sharh</span>
+                                    <span>•</span>
+                                    <span class="text-indigo-600 font-medium">${w.distance}</span>
+                                </div>
                             </div>
-                            <span class="bg-emerald-50 text-emerald-700 text-xs px-2.5 py-1 rounded-lg font-medium border border-emerald-200">
-                                📍 ${dist}
-                            </span>
+                            <span class="bg-emerald-50 text-emerald-700 text-xs px-2.5 py-1 rounded-full font-medium">Bo'sh</span>
                         </div>
-
-                        <div class="flex items-center justify-between pt-2 border-t border-slate-100">
-                            <div class="flex items-center text-amber-500 text-sm font-bold">
-                                <i class="fa-solid fa-star mr-1"></i> ${rating} / 5.0
-                            </div>
-
-                            <button onclick="openModal('${name}', '${rating}', '${jobs}', '${dist}')" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-xs font-semibold px-3 py-1.5 rounded-xl border border-indigo-200/60 transition flex items-center gap-1">
-                                <i class="fa-solid fa-comments"></i> Sharhlar va Ma'lumot
-                            </button>
-                        </div>
+                        <button onclick="openModal('${w.name}', '${w.rating}', '${w.reviews_count}')" class="w-full bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-semibold py-2 rounded-xl text-xs transition">
+                            Sharhlarni ko'rish va baholash
+                        </button>
                     </div>
                 `;
             });
@@ -345,40 +299,70 @@
             container.innerHTML = html;
         }
 
-        // Modalni ochish va usta otzivlarini yuklash
-        function openModal(name, rating, jobs, dist) {
-            document.getElementById('modal-worker-name').textContent = "👨‍🔧 " + name;
-            document.getElementById('modal-worker-stats').textContent = `Bajarilgan ishlar: ${jobs} ta | Masofa: ${dist} | Reyting: ${rating}⭐`;
+        function resetWizard() {
+            wizardAnswers = {};
+            document.getElementById('wizard-step-1').classList.remove('hidden');
+            document.getElementById('wizard-step-2').classList.add('hidden');
+            document.getElementById('wizard-step-3').classList.add('hidden');
+            document.getElementById('wizard-result').classList.add('hidden');
+            document.getElementById('wizard-step-badge').innerText = "1 / 3 - Savol";
+        }
+
+        function answerQuestion(step, answer) {
+            wizardAnswers[`step${step}`] = answer;
+            if (step === 1) {
+                document.getElementById('wizard-step-1').classList.add('hidden');
+                document.getElementById('wizard-step-2').classList.remove('hidden');
+                document.getElementById('wizard-step-badge').innerText = "2 / 3 - Savol";
+            } else if (step === 2) {
+                document.getElementById('wizard-step-2').classList.add('hidden');
+                document.getElementById('wizard-step-3').classList.remove('hidden');
+                document.getElementById('wizard-step-badge').innerText = "3 / 3 - Savol";
+            } else if (step === 3) {
+                document.getElementById('wizard-step-3').classList.add('hidden');
+                document.getElementById('wizard-result').classList.remove('hidden');
+                document.getElementById('wizard-step-badge').innerText = "Tugallandi";
+                
+                let summary = [];
+                if (wizardAnswers.step1 === 'Ha') summary.push("Namlik va suv tekkani aniqlangan (Platani yuvish va tozalash kerak).");
+                if (wizardAnswers.step2 === 'Ha') summary.push("Dasturiy qotishlar mavjud (Proshivka va kesh tozalash kerak).");
+                if (wizardAnswers.step3 === 'Ha') summary.push("Jismoniy shikastlanish bor (Ekran yoki korpusni almashtirish talab etilishi mumkin).");
+                if (summary.length === 0) summary.push("Standart diagnostika va profilaktika ko'rigi yetarli.");
+                
+                document.getElementById('wizard-summary-text').innerText = summary.join(" ");
+            }
+        }
+
+        function openModal(name, rating, count) {
+            document.getElementById('modal-worker-name').innerText = `👨‍🔧 ${name}`;
+            document.getElementById('modal-worker-stats').innerText = `Baho: ⭐ ${rating} (${count} sharh)`;
             document.getElementById('form-worker-name').value = name;
 
             const reviewsContainer = document.getElementById('modal-reviews-content');
-            const workerReviews = REVIEWS_DB[name] || [];
+            const reviews = REVIEWS_DB[name] || [];
 
-            if (workerReviews.length === 0) {
-                reviewsContainer.innerHTML = `
-                    <div class="text-center py-8 bg-slate-50 rounded-xl border border-dashed border-slate-200">
-                        <p class="text-slate-400 text-xs">Ushbu ustaga hali sharh qoldirilmagan. Birinchi bo'lib sharh qoldirishingiz mumkin!</p>
-                    </div>`;
+            if (reviews.length === 0) {
+                reviewsContainer.innerHTML = `<p class="text-xs text-slate-400 text-center py-4">Ushbu usta uchun hali sharhlar qoldirilmagan. Birinchi bo'lib siz yozing!</p>`;
             } else {
-                let reviewsHtml = '';
-                workerReviews.forEach(r => {
-                    reviewsHtml += `
-                        <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-100 space-y-1">
+                let html = '';
+                reviews.forEach(r => {
+                    const stars = '⭐'.repeat(r.rating);
+                    html += `
+                        <div class="bg-slate-50 p-3 rounded-xl border border-slate-100 space-y-1">
                             <div class="flex justify-between items-center">
-                                <span class="font-semibold text-slate-700 text-xs">${r.client}</span>
-                                <span class="text-amber-500 font-bold text-xs"><i class="fa-solid fa-star"></i> ${r.rating}/5</span>
+                                <span class="font-bold text-xs text-slate-800">${r.client}</span>
+                                <span class="text-xs">${stars}</span>
                             </div>
-                            <p class="text-slate-600 text-xs italic">"${r.comment}"</p>
+                            <p class="text-xs text-slate-600">${r.comment}</p>
                         </div>
                     `;
                 });
-                reviewsContainer.innerHTML = reviewsHtml;
+                reviewsContainer.innerHTML = html;
             }
 
             document.getElementById('reviews-modal').classList.remove('hidden');
         }
 
-        // Modalni yopish
         function closeModal() {
             document.getElementById('reviews-modal').classList.add('hidden');
         }
