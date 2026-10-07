@@ -6,11 +6,6 @@
     <title>UstaGo - Professional Xizmatlar Platformasi</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
-        .logo-gradient {
-            background: linear-gradient(135deg, #6366F1 0%, #4F46E5 50%, #06B6D4 100%);
-        }
-    </style>
 </head>
 <body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col justify-between">
 
@@ -28,9 +23,7 @@
                                 <stop offset="100%" stop-color="#06B6D4" />
                             </linearGradient>
                         </defs>
-                        <!-- Stylized Location Pin Body -->
                         <path d="M50 8C31.2 8 16 23.2 16 42C16 63 42 88 50 92C58 88 84 63 84 42C84 23.2 68.8 8 50 8Z" fill="url(#ustagoGrad)"/>
-                        <!-- Inner Cutout: Modern Wrench & Speed Lightning -->
                         <path d="M42 26C35.4 26 30 31.4 30 38C30 42.8 32.8 46.9 36.8 48.9L28 72H38L44.2 55.8C46 56.6 48 57 50 57C56.6 57 62 51.6 62 45C62 40.2 59.2 36.1 55.2 34.1L64 12H54L47.8 28.2C46 27.4 44 27 42 27V26Z" fill="white" opacity="0.95"/>
                         <path d="M54 36L42 52H50L46 64L58 48H50L54 36Z" fill="#F59E0B"/>
                     </svg>
@@ -54,7 +47,7 @@
     <!-- Asosiy mazmun -->
     <main class="max-w-4xl mx-auto px-4 py-8 space-y-8 flex-1 w-full">
 
-        <!-- Hero banner with Brand Graphic -->
+        <!-- Hero banner -->
         <div class="relative overflow-hidden bg-gradient-to-r from-indigo-600 via-indigo-700 to-cyan-700 rounded-2xl p-6 text-white shadow-lg flex items-center justify-between">
             <div class="relative z-10 max-w-lg space-y-2">
                 <div class="inline-flex items-center gap-2 bg-white/10 text-cyan-200 text-xs px-3 py-1 rounded-full backdrop-blur-sm font-medium">
@@ -65,8 +58,6 @@
                     Maishiy texnika, elektronika va santexnika bo'yicha saralangan mutaxassislarni toping hamda mijozlar sharhlari bilan tanishing.
                 </p>
             </div>
-            
-            <!-- Hero Decorative Logo Watermark -->
             <div class="hidden sm:flex opacity-15 transform translate-x-4 rotate-12">
                 <svg class="w-36 h-36" viewBox="0 0 100 100" fill="currentColor">
                     <path d="M50 8C31.2 8 16 23.2 16 42C16 63 42 88 50 92C58 88 84 63 84 42C84 23.2 68.8 8 50 8Z"/>
@@ -107,49 +98,9 @@
                 </div>
             </div>
 
-            <!-- Boshqa muammo maydoni -->
             <div id="custom-problem-container" class="hidden pt-2">
                 <label class="block text-xs font-semibold text-amber-600 uppercase tracking-wider mb-2">Muammoingizni batafsil tasvirlab bering:</label>
                 <textarea id="custom-problem-text" rows="3" placeholder="Masalan: Krantdan issiq suv oqmayapti va quvurlarda shovqin bor..." class="w-full bg-amber-50/50 border border-amber-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-amber-500 outline-none"></textarea>
-            </div>
-
-            <!-- Telefon Diagnostikasi (Wizard) -->
-            <div id="phone-wizard" class="hidden bg-indigo-50/70 border border-indigo-200 rounded-2xl p-5 space-y-4">
-                <div class="flex items-center justify-between border-b border-indigo-100 pb-3">
-                    <h4 class="font-bold text-indigo-900 text-sm flex items-center gap-2">
-                        <i class="fa-solid fa-mobile-screen-button text-indigo-600"></i> Telefon Diagnostikasi (Interaktiv rejim)
-                    </h4>
-                    <span id="wizard-step-badge" class="text-xs bg-indigo-200 text-indigo-800 font-bold px-2.5 py-0.5 rounded-full">1 / 3 - Savol</span>
-                </div>
-
-                <div id="wizard-step-1" class="space-y-3">
-                    <p class="text-sm font-semibold text-slate-800">1. Telefon suvga tushganmi yoki namlik tekkanmi?</p>
-                    <div class="flex gap-3">
-                        <button onclick="answerQuestion(1, 'Ha')" class="flex-1 bg-white border border-slate-300 hover:border-indigo-500 hover:bg-indigo-50 font-medium py-2 rounded-xl text-sm transition">Ha</button>
-                        <button onclick="answerQuestion(1, 'Yoq')" class="flex-1 bg-white border border-slate-300 hover:border-indigo-500 hover:bg-indigo-50 font-medium py-2 rounded-xl text-sm transition">Yo'q</button>
-                    </div>
-                </div>
-
-                <div id="wizard-step-2" class="hidden space-y-3">
-                    <p class="text-sm font-semibold text-slate-800">2. Qotish yoki sekin ishlash holatlari bormi?</p>
-                    <div class="flex gap-3">
-                        <button onclick="answerQuestion(2, 'Ha')" class="flex-1 bg-white border border-slate-300 hover:border-indigo-500 hover:bg-indigo-50 font-medium py-2 rounded-xl text-sm transition">Ha</button>
-                        <button onclick="answerQuestion(2, 'Yoq')" class="flex-1 bg-white border border-slate-300 hover:border-indigo-500 hover:bg-indigo-50 font-medium py-2 rounded-xl text-sm transition">Yo'q</button>
-                    </div>
-                </div>
-
-                <div id="wizard-step-3" class="hidden space-y-3">
-                    <p class="text-sm font-semibold text-slate-800">3. Ekran yoki korpusda jismoniy shikastlanish bormi?</p>
-                    <div class="flex gap-3">
-                        <button onclick="answerQuestion(3, 'Ha')" class="flex-1 bg-white border border-slate-300 hover:border-indigo-500 hover:bg-indigo-50 font-medium py-2 rounded-xl text-sm transition">Ha</button>
-                        <button onclick="answerQuestion(3, 'Yoq')" class="flex-1 bg-white border border-slate-300 hover:border-indigo-500 hover:bg-indigo-50 font-medium py-2 rounded-xl text-sm transition">Yo'q</button>
-                    </div>
-                </div>
-
-                <div id="wizard-result" class="hidden bg-white p-4 rounded-xl border border-indigo-100 text-xs text-indigo-900 space-y-1">
-                    <p class="font-bold">Diagnostika Xulosasi:</p>
-                    <p id="wizard-summary-text" class="text-slate-600"></p>
-                </div>
             </div>
 
             <!-- Ustalar ro'yxati konteyneri -->
@@ -162,16 +113,12 @@
 
     </main>
 
-    <!-- MODAL: Usta haqida ma'lumot va otzivlar -->
+    <!-- MODAL -->
     <div id="reviews-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl max-w-lg w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden border border-slate-100 transition-all">
-            
-            <!-- Modal Header -->
             <div class="p-5 bg-slate-50 border-b border-slate-100 flex justify-between items-center">
                 <div>
-                    <h3 id="modal-worker-name" class="font-bold text-slate-800 text-lg flex items-center gap-2">
-                        👨‍🔧 Usta Ma'lumotlari
-                    </h3>
+                    <h3 id="modal-worker-name" class="font-bold text-slate-800 text-lg flex items-center gap-2">👨‍🔧 Usta Ma'lumotlari</h3>
                     <p id="modal-worker-stats" class="text-xs text-slate-500 mt-0.5"></p>
                 </div>
                 <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600 p-2 rounded-lg hover:bg-slate-200/50 transition">
@@ -179,17 +126,12 @@
                 </button>
             </div>
 
-            <!-- Modal Content (Otzivlar ro'yxati) -->
-            <div id="modal-reviews-content" class="p-5 overflow-y-auto space-y-4 flex-1">
-                <!-- JavaScript orqali to'ldiriladi -->
-            </div>
+            <div id="modal-reviews-content" class="p-5 overflow-y-auto space-y-4 flex-1"></div>
 
-            <!-- Modal Footer: Yangi otziv qoldirish formasi -->
             <div class="p-5 bg-slate-50 border-t border-slate-100 space-y-3">
-                <h4 class="text-xs font-bold text-slate-700 uppercase tracking-wider">Shu ustaga sharh va baho qoldirish</h4>
+                <h4 class="text-xs font-bold text-slate-700 uppercase tracking-wider">Sharh qoldirish</h4>
                 <form action="/add-worker-review" method="post" class="space-y-3">
                     <input type="hidden" id="form-worker-name" name="worker_name" value="">
-                    
                     <div class="grid grid-cols-2 gap-3">
                         <input type="text" name="client_name" placeholder="Ismingiz" required class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-indigo-500 outline-none">
                         <select name="rating" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-indigo-500 outline-none">
@@ -200,23 +142,15 @@
                             <option value="1">⭐ (1/5)</option>
                         </select>
                     </div>
-
-                    <textarea name="comment" placeholder="Ustanining xizmati va sifati haqida fikringiz..." required rows="2" class="w-full bg-white border border-slate-200 rounded-xl p-2.5 text-xs focus:ring-2 focus:ring-indigo-500 outline-none"></textarea>
-
-                    <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 rounded-xl text-xs transition duration-200 shadow-sm">
-                        Sharhni Saqlash
-                    </button>
+                    <textarea name="comment" placeholder="Fikringiz..." required rows="2" class="w-full bg-white border border-slate-200 rounded-xl p-2.5 text-xs focus:ring-2 focus:ring-indigo-500 outline-none"></textarea>
+                    <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 rounded-xl text-xs transition duration-200 shadow-sm">Sharhni Saqlash</button>
                 </form>
             </div>
-
         </div>
     </div>
 
-    <!-- Scriptlar -->
     <script>
-        let wizardAnswers = {};
         const REVIEWS_DB = {{ reviews_db | tojson }};
-
         const CATEGORY_BRANDS = {
             "Maishiy texnika": ["Bosch", "Beko", "Artel", "LG", "Samsung", "Haier", "Boshqa brend"],
             "Elektronika va Gadjetlar": ["Apple", "Samsung", "Xiaomi", "Lenovo", "HP", "Asus", "Boshqa brend"],
@@ -227,24 +161,17 @@
             const category = document.getElementById('category-select').value;
             const serviceSelect = document.getElementById('service-select');
             const brandSelect = document.getElementById('brand-select');
-            const customContainer = document.getElementById('custom-problem-container');
-            const phoneWizard = document.getElementById('phone-wizard');
             const container = document.getElementById('technicians-list');
 
-            // Clear & Reset UI Elements
             serviceSelect.innerHTML = '<option value="">-- Xizmatni tanlang --</option>';
             brandSelect.innerHTML = '<option value="">-- Brendni tanlang --</option>';
             brandSelect.disabled = true;
-            customContainer.classList.add('hidden');
-            phoneWizard.classList.add('hidden');
-            container.innerHTML = `<div class="text-center py-8 bg-slate-50 rounded-xl border border-dashed border-slate-200"><p class="text-slate-400 text-sm">Xizmat turini tanlasangiz, saralangan ustalar ro'yxati shu yerda ko'rinadi.</p></div>`;
 
             if (!category) {
                 serviceSelect.disabled = true;
                 return;
             }
 
-            // Populate Brands
             if (CATEGORY_BRANDS[category]) {
                 CATEGORY_BRANDS[category].forEach(brand => {
                     const opt = document.createElement('option');
@@ -254,7 +181,6 @@
                 });
             }
 
-            // Fetch Services dynamically
             const res = await fetch(`/api/services?category=${encodeURIComponent(category)}`);
             const data = await res.json();
 
@@ -269,27 +195,8 @@
         }
 
         function onServiceChange() {
-            const category = document.getElementById('category-select').value;
             const service = document.getElementById('service-select').value;
-            const brandSelect = document.getElementById('brand-select');
-            const customContainer = document.getElementById('custom-problem-container');
-            const phoneWizard = document.getElementById('phone-wizard');
-
-            brandSelect.disabled = !service;
-
-            if (service.includes("Boshqa")) {
-                customContainer.classList.remove('hidden');
-            } else {
-                customContainer.classList.add('hidden');
-            }
-
-            if (service === "Smartfonlar va Mobil telefonlar") {
-                phoneWizard.classList.remove('hidden');
-                resetWizard();
-            } else {
-                phoneWizard.classList.add('hidden');
-            }
-
+            document.getElementById('brand-select').disabled = !service;
             fetchTechnicians();
         }
 
@@ -304,14 +211,14 @@
             const data = await res.json();
 
             if (data.workers.length === 0) {
-                container.innerHTML = `<div class="p-6 text-center text-slate-500 text-sm bg-slate-50 rounded-xl">Hozircha ushbu yo'nalish bo'yicha bo'sh ustalar topilmadi.</div>`;
+                container.innerHTML = `<div class="p-6 text-center text-slate-500 text-sm bg-slate-50 rounded-xl">Hozircha ustalar topilmadi.</div>`;
                 return;
             }
 
             let html = '<div class="grid grid-cols-1 md:grid-cols-2 gap-4">';
             data.workers.forEach(w => {
                 html += `
-                    <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition flex flex-col justify-between space-y-3">
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between space-y-3">
                         <div class="flex justify-between items-start">
                             <div>
                                 <h4 class="font-bold text-slate-800 text-base">${w.name}</h4>
@@ -325,48 +232,19 @@
                             </div>
                             <span class="bg-emerald-50 text-emerald-700 text-xs px-2.5 py-1 rounded-full font-medium">Bo'sh</span>
                         </div>
-                        <button onclick="openModal('${w.name}', '${w.rating}', '${w.reviews_count}')" class="w-full bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-semibold py-2 rounded-xl text-xs transition">
-                            Sharhlarni ko'rish va baholash
-                        </button>
+                        <div class="flex gap-2">
+                            <a href="tel:${w.phone}" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2 rounded-xl text-xs transition flex items-center justify-center gap-1.5 shadow-sm">
+                                <i class="fa-solid fa-phone"></i> ${w.phone}
+                            </a>
+                            <button onclick="openModal('${w.name}', '${w.rating}', '${w.reviews_count}')" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-semibold px-3 py-2 rounded-xl text-xs transition">
+                                Sharhlar
+                            </button>
+                        </div>
                     </div>
                 `;
             });
             html += '</div>';
             container.innerHTML = html;
-        }
-
-        function resetWizard() {
-            wizardAnswers = {};
-            document.getElementById('wizard-step-1').classList.remove('hidden');
-            document.getElementById('wizard-step-2').classList.add('hidden');
-            document.getElementById('wizard-step-3').classList.add('hidden');
-            document.getElementById('wizard-result').classList.add('hidden');
-            document.getElementById('wizard-step-badge').innerText = "1 / 3 - Savol";
-        }
-
-        function answerQuestion(step, answer) {
-            wizardAnswers[`step${step}`] = answer;
-            if (step === 1) {
-                document.getElementById('wizard-step-1').classList.add('hidden');
-                document.getElementById('wizard-step-2').classList.remove('hidden');
-                document.getElementById('wizard-step-badge').innerText = "2 / 3 - Savol";
-            } else if (step === 2) {
-                document.getElementById('wizard-step-2').classList.add('hidden');
-                document.getElementById('wizard-step-3').classList.remove('hidden');
-                document.getElementById('wizard-step-badge').innerText = "3 / 3 - Savol";
-            } else if (step === 3) {
-                document.getElementById('wizard-step-3').classList.add('hidden');
-                document.getElementById('wizard-result').classList.remove('hidden');
-                document.getElementById('wizard-step-badge').innerText = "Tugallandi";
-                
-                let summary = [];
-                if (wizardAnswers.step1 === 'Ha') summary.push("Namlik va suv tekkani aniqlangan (Platani yuvish va tozalash kerak).");
-                if (wizardAnswers.step2 === 'Ha') summary.push("Dasturiy qotishlar mavjud (Proshivka va kesh tozalash kerak).");
-                if (wizardAnswers.step3 === 'Ha') summary.push("Jismoniy shikastlanish bor (Ekran yoki korpusni almashtirish talab etilishi mumkin).");
-                if (summary.length === 0) summary.push("Standart diagnostika va profilaktika ko'rigi yetarli.");
-                
-                document.getElementById('wizard-summary-text').innerText = summary.join(" ");
-            }
         }
 
         function openModal(name, rating, count) {
@@ -378,16 +256,15 @@
             const reviews = REVIEWS_DB[name] || [];
 
             if (reviews.length === 0) {
-                reviewsContainer.innerHTML = `<p class="text-xs text-slate-400 text-center py-4">Ushbu usta uchun hali sharhlar qoldirilmagan. Birinchi bo'lib siz yozing!</p>`;
+                reviewsContainer.innerHTML = `<p class="text-xs text-slate-400 text-center py-4">Sharhlar mavjud emas.</p>`;
             } else {
                 let html = '';
                 reviews.forEach(r => {
-                    const stars = '⭐'.repeat(r.rating);
                     html += `
                         <div class="bg-slate-50 p-3 rounded-xl border border-slate-100 space-y-1">
                             <div class="flex justify-between items-center">
                                 <span class="font-bold text-xs text-slate-800">${r.client}</span>
-                                <span class="text-xs">${stars}</span>
+                                <span class="text-xs">${'⭐'.repeat(r.rating)}</span>
                             </div>
                             <p class="text-xs text-slate-600">${r.comment}</p>
                         </div>
