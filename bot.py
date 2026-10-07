@@ -8,8 +8,7 @@ from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, WebAppInfo
 BOT_TOKEN = "8994199161:AAHctwnIncMvmhaRwwThT-d4nsGKLExbmcw"
 
 # Saytingiz domeni
-WEBAPP_URL = "https://ustago.up.railway.app"  # Agar server havolangiz boshqacha bo'lsa, shuni qo'yasiz
-
+https://ustagoorg.onrender.com
 bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher()
 
