@@ -36,7 +36,7 @@ async def bot_webhook(request: Request):
 
 @app.get("/")
 async def home(request: Request):
-    # Yangi va barqaror TemplateResponse formatida
+    # Kesh xatoligini oldini oluvchi yangi va to'g'ri TemplateResponse formati
     return templates.TemplateResponse(request, "index.html", {"request": request})
 
 # API Endpoints
