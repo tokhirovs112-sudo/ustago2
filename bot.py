@@ -1,4 +1,3 @@
-import asyncio
 import logging
 from aiogram import Bot, Dispatcher, types
 from aiogram.filters import CommandStart
@@ -7,8 +6,9 @@ from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, WebAppInfo
 # Telegram Bot Token
 BOT_TOKEN = "8994199161:AAHctwnIncMvmhaRwwThT-d4nsGKLExbmcw"
 
-# Saytingiz domeni
-https://ustagoorg.onrender.com
+# Render'dagi FastAPI saytingiz havolasi
+WEBAPP_URL = "https://ustago.onrender.com"  # O'zingizning aniq *.onrender.com havolangizni qo'ying
+
 bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher()
 
@@ -38,11 +38,3 @@ async def start_handler(message: types.Message):
     )
 
     await message.answer(welcome_text, parse_mode="Markdown", reply_markup=keyboard)
-
-async def main():
-    logging.basicConfig(level=logging.INFO)
-    print("UstaGo boti muvaffaqiyatli ishga tushdi!")
-    await dp.start_polling(bot)
-
-if __name__ == "__main__":
-    asyncio.run(main())
