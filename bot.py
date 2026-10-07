@@ -6,7 +6,7 @@ from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, WebAppInfo
 # Telegram Bot Tokeningiz
 BOT_TOKEN = "8994199161:AAHctwnIncMvmhaRwwThT-d4nsGKLExbmcw"
 
-# Render'dagi o'z aniq havolangizni yozing (oxirida / belgisi bo'lmasin)
+# Render'dagi o'z aniq havolangiz (oxirida / belgisi bo'lmasin)
 WEBAPP_URL = "https://ustagoorg.onrender.com"
 
 bot = Bot(token=BOT_TOKEN)
