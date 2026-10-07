@@ -4,18 +4,17 @@ from aiogram import Bot, Dispatcher, types
 from aiogram.filters import CommandStart
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, WebAppInfo
 
-# 1. BotFather'dan olingan API Token'ni kiriting
-BOT_TOKEN = "YOUR_TELEGRAM_BOT_TOKEN_HERE"
+# Telegram Bot Token
+BOT_TOKEN = "8994199161:AAHctwnIncMvmhaRwwThT-d4nsGKLExbmcw"
 
-# 2. Saytingiz manzili (Render, Railway yoki serveringiz domeni)
-WEBAPP_URL = "https://ustago.up.railway.app"  # O'zingizning domeningizga o'zgartiring
+# Saytingiz domeni
+WEBAPP_URL = "https://ustago.up.railway.app"  # Agar server havolangiz boshqacha bo'lsa, shuni qo'yasiz
 
 bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher()
 
 @dp.message(CommandStart())
 async def start_handler(message: types.Message):
-    # Telegram ichida Mini App tugmasi
     keyboard = InlineKeyboardMarkup(
         inline_keyboard=[
             [
@@ -27,7 +26,7 @@ async def start_handler(message: types.Message):
             [
                 InlineKeyboardButton(
                     text="👨‍💻 Admin bilan bog'lanish",
-                    url="https://t.me/tokhirov0777"  # Sizning Telegram username'ingiz
+                    url="https://t.me/tokhirov0777"
                 )
             ]
         ]
@@ -43,7 +42,7 @@ async def start_handler(message: types.Message):
 
 async def main():
     logging.basicConfig(level=logging.INFO)
-    print("Bot muvaffaqiyatli ishga tushdi...")
+    print("UstaGo boti muvaffaqiyatli ishga tushdi!")
     await dp.start_polling(bot)
 
 if __name__ == "__main__":
