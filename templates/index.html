@@ -64,9 +64,6 @@
                     <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">3. Brend</label>
                     <select id="brand-select" disabled onchange="fetchTechnicians()" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-sm focus:ring-2 focus:ring-indigo-500 focus:bg-white outline-none transition disabled:opacity-50">
                         <option value="">-- Brendni tanlang --</option>
-                        {% for brand in brands %}
-                            <option value="{{ brand }}">{{ brand }}</option>
-                        {% endfor %}
                     </select>
                 </div>
             </div>
@@ -217,6 +214,13 @@
     <script>
         let wizardAnswers = {};
 
+        // Bo'limlarga mos brendlar
+        const CATEGORY_BRANDS = {
+            "Maishiy texnika": ["Bosch", "Beko", "Artel", "LG", "Samsung", "Haier", "Boshqa brend"],
+            "Elektronika va Gadjetlar": ["Apple", "Samsung", "Xiaomi", "Lenovo", "HP", "Asus", "Boshqa brend"],
+            "Santexnika muammolari": ["Grohe", "Hansgrohe", "Cersanit", "Boshqa brend"]
+        };
+
         async function onCategoryChange() {
             const category = document.getElementById('category-select').value;
             const serviceSelect = document.getElementById('service-select');
@@ -226,6 +230,8 @@
             const phoneWizard = document.getElementById('phone-wizard');
 
             serviceSelect.innerHTML = '<option value="">-- Xizmatni tanlang --</option>';
+            brandSelect.innerHTML = '<option value="">-- Brendni tanlang --</option>';
+
             serviceSelect.disabled = !category;
             brandSelect.disabled = true;
             customContainer.classList.add('hidden');
@@ -238,6 +244,16 @@
 
             if (!category) return;
 
+            // Bo'limga mos brendlarni to'ldirish
+            const brands = CATEGORY_BRANDS[category] || ["Boshqa brend"];
+            brands.forEach(b => {
+                const opt = document.createElement('option');
+                opt.value = b;
+                opt.textContent = b;
+                brandSelect.appendChild(opt);
+            });
+
+            // Xizmatlarni yuklash
             const res = await fetch(`/get-services?category=${encodeURIComponent(category)}`);
             const services = await res.json();
 
