@@ -6,17 +6,18 @@ from bot import dp, bot, BOT_TOKEN
 
 app = FastAPI(title="UstaGo Platformasi")
 
+# Statik fayllar va shablonlar
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
-# Renderdagi saytingizning aniq domeni (oxirida / bo'lmasin)
+# Renderdagi saytingizning aniq domeni
 WEBHOOK_HOST = "https://ustagoorg.onrender.com"
 WEBHOOK_PATH = f"/bot/webhook/{BOT_TOKEN}"
 WEBHOOK_URL = f"{WEBHOOK_HOST}{WEBHOOK_PATH}"
 
 @app.on_event("startup")
 async def on_startup():
-    # Sayt yoqilganda Telegramga Webhook manzilini ulab qo'yamiz
+    # Sayt yoqilganda Telegramga Webhook ulaymiz
     await bot.set_webhook(WEBHOOK_URL)
     print(f"Webhook o'rnatildi: {WEBHOOK_URL}")
 
@@ -35,11 +36,12 @@ async def bot_webhook(request: Request):
 
 @app.get("/")
 async def home(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request})
+    # Yangi va barqaror TemplateResponse formatida
+    return templates.TemplateResponse(request, "index.html", {"request": request})
 
 # API Endpoints
 @app.get("/api/services")
-async def get_services():
+async def get_services(category: str = ""):
     return [
         {"id": 1, "name": "Maishiy texnika ta'miri", "icon": "Wrench"},
         {"id": 2, "name": "Santexnika xizmati", "icon": "Droplet"},
@@ -48,14 +50,30 @@ async def get_services():
     ]
 
 @app.get("/api/technicians")
-async def get_technicians():
+async def get_technicians(category: str = "", service: str = "", district: str = ""):
     return [
         {
             "id": 1,
             "name": "Jasur Rahimov",
-            "specialty": "Maishiy texnika ustasi",
+            "specialty": service or "Maishiy texnika ustasi",
             "rating": 4.9,
             "reviews_count": 28,
             "phone": "+998 90 123 45 67"
+        },
+        {
+            "id": 2,
+            "name": "Sardor Azimov",
+            "specialty": service or "Professional Usta",
+            "rating": 4.8,
+            "reviews_count": 19,
+            "phone": "+998 91 987 65 43"
         }
     ]
+
+@app.get("/api/search")
+async def search_services(query: str = ""):
+    all_services = await get_services()
+    if not query:
+        return all_services
+    filtered = [s for s in all_services if query.lower() in s["name"].lower()]
+    return filtered
