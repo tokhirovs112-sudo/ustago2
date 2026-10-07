@@ -34,17 +34,34 @@ async def bot_webhook(request: Request):
 
 @app.get("/")
 async def home(request: Request):
-    # index.html talab qilayotgan categories ma'lumotini shu yerga qo'shamiz
     categories_data = {
         "Maishiy texnika": "Wrench",
         "Santexnika": "Droplet",
         "Elektrik": "Zap",
         "Konditsioner": "Wind"
     }
+    # index.html talab qilayotgan districts ro'yxati
+    districts_data = [
+        "Barchasi (Hudud bo'yicha)",
+        "Yunusobod",
+        "Mirzo Ulug'bek",
+        "Chilonzor",
+        "Mirobod",
+        "Shayxontohur",
+        "Olmazor",
+        "Uchtepa",
+        "Yakkasaroy",
+        "Yashnobod",
+        "Sergeli"
+    ]
     return templates.TemplateResponse(
         request, 
         "index.html", 
-        {"request": request, "categories": categories_data}
+        {
+            "request": request, 
+            "categories": categories_data,
+            "districts": districts_data
+        }
     )
 
 # API Endpoints
