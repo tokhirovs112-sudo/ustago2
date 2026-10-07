@@ -126,7 +126,6 @@ SERVICES_DB = {
     }
 }
 
-# Xizmatlar bo'yicha indikativ narxlar kalkulyatori ma'lumotlari
 PRICE_ESTIMATES_DB = {
     "Kir yuvish mashinasi ta'miri va tozalash": "100,000 - 250,000 so'm",
     "Muzlatgich va sovutish tizimlari": "150,000 - 350,000 so'm",
@@ -142,8 +141,6 @@ PRICE_ESTIMATES_DB = {
     "Hojatxona va vanna tizimlari": "80,000 - 250,000 so'm",
     "Kanalizatsiya va tıkanoqlikni ochish": "120,000 - 350,000 so'm"
 }
-
-BRANDS = ["Apple", "Samsung", "Xiaomi", "LG", "Bosch", "Beko", "Artel", "Lenovo", "HP", "Boshqa brend"]
 
 WORKER_REVIEWS_DB = {
     "Nodir Abdullayev": [
@@ -171,7 +168,6 @@ async def read_root(request: Request):
         name="index.html",
         context={
             "categories": SERVICES_DB,
-            "brands": BRANDS,
             "reviews_db": WORKER_REVIEWS_DB,
             "price_db": PRICE_ESTIMATES_DB
         }
