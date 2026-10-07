@@ -1,16 +1,28 @@
 from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from jinja2 import Undefined
 from aiogram.types import Update
 from bot import dp, bot, BOT_TOKEN
 
-app = FastAPI(title="UstaGo Platformasi")
+class SilentUndefined(Undefined):
+    def __str__(self):
+        return ""
+    def __iter__(self):
+        return iter([])
+    def __getattr__(self, name):
+        return self
+    def __call__(self, *args, **kwargs):
+        return self
 
-# Statik fayllar va shablonlar
+# Debug rejimini yoqamiz, shunda xato chiqsa brauzerning o'zida yorqin qizil bo'lib ko'rinadi
+app = FastAPI(title="UstaGo Platformasi", debug=True)
+
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
-# Renderdagi saytingizning aniq domeni
+templates.env.undefined = SilentUndefined
+
 WEBHOOK_HOST = "https://ustagoorg.onrender.com"
 WEBHOOK_PATH = f"/bot/webhook/{BOT_TOKEN}"
 WEBHOOK_URL = f"{WEBHOOK_HOST}{WEBHOOK_PATH}"
@@ -25,7 +37,6 @@ async def on_shutdown():
     await bot.delete_webhook()
     await bot.session.close()
 
-# Telegramdan keladigan xabarlarni qabul qiluvchi endpoint
 @app.post(WEBHOOK_PATH)
 async def bot_webhook(request: Request):
     json_data = await request.json()
@@ -69,7 +80,6 @@ async def home(request: Request):
         }
     )
 
-# API Endpoints
 @app.get("/api/services")
 async def get_services(category: str = ""):
     return [
