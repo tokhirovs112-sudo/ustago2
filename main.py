@@ -6,7 +6,6 @@ app = FastAPI(title="UstaGo API")
 
 templates = Jinja2Templates(directory="templates")
 
-# Har bir xizmat turida 5 dan ortiq usta va ularning ma'lumotlari
 SERVICES_DB = {
     "Maishiy texnika": {
         "Kir yuvish mashinasi ta'miri va tozalash": [
@@ -128,18 +127,238 @@ SERVICES_DB = {
 
 BRANDS = ["Apple", "Samsung", "Xiaomi", "LG", "Bosch", "Beko", "Artel", "Lenovo", "HP", "Boshqa brend"]
 
+# Har bir ustada kamida 2 tadan sharh mavjud
 WORKER_REVIEWS_DB = {
-    "Jasurbek Aliyev (iPhone master)": [
-        {"client": "Murod", "comment": "Ekranini 20 daqiqada almashtirib berdi, super!", "rating": 5}
-    ],
-    "Jasur Santexnik": [
-        {"client": "Laziz", "comment": "Quvurdagi oqishni tezda to'xtatdi, raxmat!", "rating": 5}
-    ],
+    # Maishiy texnika ustalari
     "Nodir Abdullayev": [
-        {"client": "Sardor", "comment": "Kir yuvish mashinasini sifatli tozalab berdi.", "rating": 5}
+        {"client": "Sardor", "comment": "Kir yuvish mashinasini gigiyenik tozalab berdi, hamma hidlar yo'qoldi.", "rating": 5},
+        {"client": "Madina", "comment": "Baraban shovqin qilayotgan edi, podshipnikni almashtirib berdi. Rahmat!", "rating": 5}
+    ],
+    "Rustam Jo'rayev": [
+        {"client": "Bekzod", "comment": "Toshkent markaziga yetib kelishi tez bo'ldi. Sifatli ta'mir.", "rating": 5},
+        {"client": "Nilufar", "comment": "Suv to'kib yuborayotgan edi, nasosini almashtirib berdi.", "rating": 4}
+    ],
+    "Otabek KirMashina": [
+        {"client": "Jasur", "comment": "Ishiga juda mas'uliyatli usta. Barcha detallarga kafolat berdi.", "rating": 5},
+        {"client": "Umida", "comment": "Tushunmovchiliksiz tez va toza ishlab ketdi.", "rating": 5}
+    ],
+    "Sardor Umarov": [
+        {"client": "Otabek", "comment": "Artel kir mashinamizni tezda sozlab berdi. Tavsiya qilaman!", "rating": 5},
+        {"client": "Lola", "comment": "O'z ishining ustasi, narxi ham juda hamyonbop.", "rating": 5}
+    ],
+    "Jahongir Vahobov": [
+        {"client": "Sherzod", "comment": "Platasida muammo bor ekan, qayta proshivka qilib berdi.", "rating": 4},
+        {"client": "Nigora", "comment": "Vaqtida keldi, muammoni darhol aniqladi.", "rating": 5}
+    ],
+    "Ilhomiddin Usta": [
+        {"client": "Bobur", "comment": "LG kir yuvish mashinasining shlangini almashtirdi. Baraka topsin.", "rating": 5},
+        {"client": "Dildora", "comment": "Juda hushfe'l va insofli usta.", "rating": 5}
+    ],
+    "Botirxon Axmedov": [
+        {"client": "Davron", "comment": "Motor cho'tkalarini almashtirib berdi, mashinka yana yangiday ishlayapti.", "rating": 5},
+        {"client": "Aziza", "comment": "Xizmat ko'rsatish darajasi a'lo.", "rating": 4}
+    ],
+
+    "Anvar Xolodilshik": [
+        {"client": "Dilshod", "comment": "Muzlatgich freonini quyib berdi, hozir muzlatishi juda zo'r.", "rating": 5},
+        {"client": "Shaxnoza", "comment": "Motorini almashtirdi, kafolat taloni ham berdi.", "rating": 5}
+    ],
+    "Zokir Master": [
+        {"client": "Jahongir", "comment": "Eski Stinol muzlatgichimizni ham zo'r sozlab berdi.", "rating": 4},
+        {"client": "Sevara", "comment": "Tez va sifatli ta'mirlash uchun rahmat!", "rating": 5}
+    ],
+    "Murod Xolod": [
+        {"client": "Farhod", "comment": "No-Frost tizimi muzlab qolayotgan edi, datchigini almashtirdi.", "rating": 5},
+        {"client": "Guli", "comment": "Chaqiruvimizga tezda yetib keldi.", "rating": 5}
+    ],
+    "Shohrux Sovutgich": [
+        {"client": "Murod", "comment": "Muzlatgich eshik rezinalarini almashtirib berdi. Zanglagan joylarini ham tozalab ketdi.", "rating": 5},
+        {"client": "Kamola", "comment": "Insofli usta, narxi ham qimmat emas.", "rating": 4}
+    ],
+    "Dilshod Qodirov": [
+        {"client": "Rustam", "comment": "Bosch muzlatgichni rasmiy servisdagidan arzonroq va tezroq tuzatib berdi.", "rating": 5},
+        {"client": "Nodira", "comment": "Baraka topsinlar, muzlatgichim saqlab qolindi.", "rating": 5}
+    ],
+    "Alisher Tursunov": [
+        {"client": "Ilhom", "comment": "Kompressor muammosini tezda hal qildi.", "rating": 4},
+        {"client": "Muxlisa", "comment": "O'z ishining ustasi, rahmat.", "rating": 5}
+    ],
+
+    "Davron Valiyev": [
+        {"client": "Alisher", "comment": "Gaz plita forsunkalarini tozalab, alangasini sozlab berdi.", "rating": 5},
+        {"client": "Malika", "comment": "Elektro-podjig ishlamayotgan edi, almashtirib berdi.", "rating": 5}
+    ],
+    "Shoxrux Qosmonov": [
+        {"client": "Sanjar", "comment": "Duhovka qizimayotgan edi, tenini almashtirdi.", "rating": 4},
+        {"client": "Munisa", "comment": "Juda toza va tartibli ishladi.", "rating": 5}
+    ],
+    "Olimjon Gaz": [
+        {"client": "Zohid", "comment": "Gaz szivishini to'xtatib, xavfsizlik klapanini o'rnatdi.", "rating": 5},
+        {"client": "Nargiza", "comment": "Ajoyib mutaxassis, o'z ishini biladi.", "rating": 5}
+    ],
+    "Hikmatillo Usta": [
+        {"client": "Siroj", "comment": "Pech oynasini almashtirib berdi, juda shaffof va mustahkam.", "rating": 5},
+        {"client": "Feruza", "comment": "Vaqtida kelgani uchun rahmat.", "rating": 4}
+    ],
+    "Bobur Isoqov": [
+        {"client": "Shohruh", "comment": "Beko plitamizni qisqa vaqtda sozlab berdi.", "rating": 5},
+        {"client": "Gulasal", "comment": "Xushmuomala va tajribali usta.", "rating": 5}
+    ],
+    "Sanjar Narziyev": [
+        {"client": "Ulug'bek", "comment": "Gaz shlangini xavfsiz rezina shlangga almashtirib berdi.", "rating": 4},
+        {"client": "Zaynab", "comment": "Sifatli xizmat ko'rsatildi.", "rating": 5}
+    ],
+
+    "Bekzod KOND": [
+        {"client": "Jamshid", "comment": "Konditsioner filtrlarini yuvib, freon quydi. Muzdek sovutayapti.", "rating": 5},
+        {"client": "Diyora", "comment": "Mavsum oldidan juda kerakli xizmat bo'ldi.", "rating": 4}
     ],
     "Sardor Klimat": [
-        {"client": "Jahongir", "comment": "Konditsionerga freon quyib berdi, sovuqligi zo'r bo'ldi.", "rating": 5}
+        {"client": "Jahongir", "comment": "Konditsionerga freon quyib berdi, sovuqligi zo'r bo'ldi.", "rating": 5},
+        {"client": "Barno", "comment": "Trubalardan suv oqayotgan edi, drenajni tozalab berdi.", "rating": 5}
+    ],
+    "Islomjon Klimat": [
+        {"client": "Akmal", "comment": "Inverter konditsionerni proshivka qilib berdi.", "rating": 5},
+        {"client": "Saida", "comment": "Tashqi blokni ham yuvib tozalab ketdi.", "rating": 5}
+    ],
+    "Jasur Freon": [
+        {"client": "Otabek", "comment": "30 daqiqada yetib keldi. R-410 freon quyib berdi.", "rating": 4},
+        {"client": "Dilfuza", "comment": "Baraka topsin, juda yaxshi usta.", "rating": 5}
+    ],
+    "Farhod Mamatov": [
+        {"client": "Bekzod", "comment": "Platasidagi kondensatorlarni almashtirib sozlab berdi.", "rating": 5},
+        {"client": "Shahlo", "comment": "Toshkent bo'ylab eng yaxshi klimatist!", "rating": 5}
+    ],
+    "Eldor Zokirov": [
+        {"client": "Sherzod", "comment": "Konditsionerni demontaj qilib boshqa xonaga ko'chirib berdi.", "rating": 5},
+        {"client": "G'azal", "comment": "Ixcham va toza ishlaydi.", "rating": 4}
+    ],
+
+    "Murod Master": [
+        {"client": "Farrux", "comment": "Mikrovolnovka likopchasi aylanmayotgan edi, motorini almashtirdi.", "rating": 5},
+        {"client": "Zulfiya", "comment": "Qizitmayotgan edi, magnetronini sozlab berdi.", "rating": 5}
+    ],
+    "Akmal Raximov": [
+        {"client": "Tohir", "comment": "Eski LG mikrovolnovkamizni saqlab qoldi.", "rating": 5},
+        {"client": "Rayhon", "comment": "Juda tez va sifatli xizmat.", "rating": 5}
+    ],
+    "Umidjon Pech": [
+        {"client": "Mansur", "comment": "Eshik zamogini almashtirdi. Hozir bemalol yopilyapti.", "rating": 5},
+        {"client": "Nargiz", "comment": "Arzon va sifatli xizmat ko'rsatdi.", "rating": 4}
+    ],
+    "Jamshid Bekov": [
+        {"client": "Botir", "comment": "Kondensatorini almashtirdi, uchqun chiqarmayapti endi.", "rating": 4},
+        {"client": "Rano", "comment": "Rahmat usta aka, baraka toping.", "rating": 5}
+    ],
+    "Xurshid Aliyev": [
+        {"client": "Dilmurod", "comment": "Sensori ishlamay qolgandi, tugmachali panelga o'tkazib berdi.", "rating": 5},
+        {"client": "Sabohat", "comment": "Mas'uliyatli usta.", "rating": 5}
+    ],
+    "Ulug'bek Usta": [
+        {"client": "Davlat", "comment": "Ichki saqlagichini (predoxranitel) almashtirib berdi.", "rating": 4},
+        {"client": "Shirin", "comment": "Tushunarli tushuntirib berdi.", "rating": 5}
+    ],
+
+    # Elektronika ustalari
+    "Jasurbek Aliyev (iPhone master)": [
+        {"client": "Murod", "comment": "Ekranini 20 daqiqada almashtirib berdi, super!", "rating": 5},
+        {"client": "Kamron", "comment": "iPhone 13 battery health 100% qilib yangilap berdi. TrueTone saqlanib qoldi.", "rating": 5}
+    ],
+    "Sardor Qodirov (Android master)": [
+        {"client": "Doston", "comment": "Samsung S21 ekranini originaliga almashtirdi.", "rating": 5},
+        {"client": "Laylo", "comment": "Gnezdosini almashtirib berdi, tez zaryad olmoqda.", "rating": 4}
+    ],
+    "Farrux Mobile": [
+        {"client": "Shoxrux", "comment": "Suvga tushgan telefonni platasini tozalab qayta yoqib berdi.", "rating": 5},
+        {"client": "Munira", "comment": "Platasidagi mikrosxemani qayta kalitlab berdi.", "rating": 5}
+    ],
+    "Jamshid Fix": [
+        {"client": "Javohir", "comment": "Xiaomi telefondagi bootloop xatosini tuzatib berdi.", "rating": 5},
+        {"client": "Zarina", "comment": "Kamerasi ishlamay qolgandi, lentasini almashtirdi.", "rating": 5}
+    ],
+    "Nodirbek Apple": [
+        {"client": "Sirojiddin", "comment": "FaceID ishlamay qolgandi, mikroskop ostida tiklab berdi.", "rating": 5},
+        {"client": "Madinabonu", "comment": "Orqa shishasini lazerda sifatli almashtirdi.", "rating": 5}
+    ],
+    "Bobur Samsung": [
+        {"client": "Mirzo", "comment": "Dinamikidan ovoz chiqmayotgandi, tozalab yangiladi.", "rating": 4},
+        {"client": "Nodira", "comment": "Original zapchast qo'ygani uchun rahmat.", "rating": 5}
+    ],
+    "Sirojiddin Gadget": [
+        {"client": "Sardor", "comment": "Mikrofon va dinamiklarini diagnostika qilib berdi.", "rating": 5},
+        {"client": "Gulnoza", "comment": "Proshivkasini yangilab berdi.", "rating": 4}
+    ],
+
+    "Bobur Usmonov": [
+        {"client": "Asadbek", "comment": "iPad 9 ekran oynasini sensorini buzmasdan almashtirdi.", "rating": 5},
+        {"client": "Aziza", "comment": "Zaryad ushlamayotgan edi, akkumulyatorini yangiladi.", "rating": 5}
+    ],
+    "Aziz Masharipov": [
+        {"client": "Xursand", "comment": "Samsung Tab A7 ni gnezdosini almashtirib berdi.", "rating": 5},
+        {"client": "Dildora", "comment": "Rasm va ma'lumotlarimni saqlab qolgani uchun rahmat!", "rating": 5}
+    ],
+    "Husniddin Tab": [
+        {"client": "Rustam", "comment": "Grafik planshetni qalamini sozlab berdi.", "rating": 4},
+        {"client": "Charos", "comment": "Tezkor va sifatli xizmat.", "rating": 5}
+    ],
+
+    "Aziz Rahimov": [
+        {"client": "Ravshan", "comment": "Noutbukni termo-pastasini almashtirib tozaladi, qizimayapti endi.", "rating": 5},
+        {"client": "Zebo", "comment": "SSD o'rnatib Windows 11 qo'yib berdi, uchoqday ishlayapti.", "rating": 5}
+    ],
+    "Otabek PC": [
+        {"client": "Sanjar", "comment": "Kompyuter blok pitaniyasini almashtirdi.", "rating": 4},
+        {"client": "Dilbar", "comment": "Videokarta kuleri shovqin qilayotgandi, yog'lab berdi.", "rating": 5}
+    ],
+
+    "Farrux Gadget": [
+        {"client": "Farxod", "comment": "Apple Watch ekranini almashtirib berdi, suv kirib ketmaydi.", "rating": 5},
+        {"client": "Nilufar", "comment": "Tasma (remeshok) qisqichini sozlab berdi.", "rating": 5}
+    ],
+    "Asilbek Watch": [
+        {"client": "Jamshid", "comment": "Galaxy Watch bateriyasini yangiladi. Endi 2 kunga yetyapti.", "rating": 5},
+        {"client": "Dinora", "comment": "Sensor yaxshi ishlamayotgandi, kalibrovka qilib berdi.", "rating": 5}
+    ],
+
+    # Santexnika ustalari
+    "Jasur Santexnik": [
+        {"client": "Laziz", "comment": "Quvurdagi oqishni tezda to'xtatdi, raxmat!", "rating": 5},
+        {"client": "Otabek", "comment": "Grohe smesitelini o'rnatib berdi. Ishiga a'lo baho!", "rating": 5}
+    ],
+    "Ilhom Zokirov": [
+        {"client": "Sardor", "comment": "Rakovina ostidagi sifonni va egiluvchan shlanglarni almashtirdi.", "rating": 5},
+        {"client": "Gulsanam", "comment": "Krant tomchilab turgandi, prokladkasini yangiladi.", "rating": 4}
+    ],
+    "Sanjar Krant": [
+        {"client": "Dilshod", "comment": "Dush smesitelini tezda montaj qildi.", "rating": 5},
+        {"client": "Dilnoza", "comment": "Xushfe'l usta, rahmat.", "rating": 4}
+    ],
+
+    "Bahrom Truba": [
+        {"client": "Javlon", "comment": "Devor ichidagi plastmassa quvur teshilganini payvandlab berdi.", "rating": 5},
+        {"client": "Maloxat", "comment": "Oqayotgan jo'mrakni darhol to'xtatdi.", "rating": 4}
+    ],
+    "Umid Santexnik": [
+        {"client": "Nodir", "comment": "Kvartiradagi barcha plastmassa quvurlarni yangisiga o'tkazdi.", "rating": 5},
+        {"client": "Diyora", "comment": "Juda toza va chiroyli payvand qildi.", "rating": 5}
+    ],
+
+    "Sherzod Usta": [
+        {"client": "Bahodir", "comment": "Unitaz bachog'i (siston) mexanizmini almashtirdi.", "rating": 5},
+        {"client": "Umida", "comment": "Vannani germetiklab berdi, endi suv oqmayapti.", "rating": 5}
+    ],
+    "Farhod Vanna": [
+        {"client": "Murod", "comment": "Akkril vannani sifatli montaj qilib berdi.", "rating": 5},
+        {"client": "Shahnoza", "comment": "Dush kabinasi eshigini sozlab berdi.", "rating": 5}
+    ],
+
+    "Anvar Chistka": [
+        {"client": "Murodjon", "comment": "Kanalizatsiya tıkanib qolgandi, tros bilan 15 minutda ochdi.", "rating": 5},
+        {"client": "Nigora", "comment": "Ajoyib uskunasi bor ekan, oshxona quvurini tozalab berdi.", "rating": 5}
+    ],
+    "Akmal Kanalizatsiya": [
+        {"client": "Bekzod", "comment": "Gidrodinamik usulda quvurlarni yog'lardan tozaladi.", "rating": 5},
+        {"client": "Shoira", "comment": "Sassiq hid ketdi, rahmat usta!", "rating": 4}
     ]
 }
 
@@ -159,31 +378,3 @@ async def read_root(request: Request):
             "categories": SERVICES_DB,
             "brands": BRANDS,
             "workers": all_workers,
-            "reviews_db": WORKER_REVIEWS_DB
-        }
-    )
-
-@app.get("/get-services")
-async def get_services(category: str):
-    return list(SERVICES_DB.get(category, {}).keys())
-
-@app.get("/get-technicians")
-async def get_technicians(category: str, service: str, brand: str = ""):
-    return SERVICES_DB.get(category, {}).get(service, [])
-
-@app.post("/add-worker-review")
-async def add_worker_review(
-    worker_name: str = Form(...),
-    client_name: str = Form(...),
-    comment: str = Form(...),
-    rating: int = Form(5)
-):
-    if worker_name not in WORKER_REVIEWS_DB:
-        WORKER_REVIEWS_DB[worker_name] = []
-        
-    WORKER_REVIEWS_DB[worker_name].append({
-        "client": client_name,
-        "comment": comment,
-        "rating": rating
-    })
-    return RedirectResponse(url="/", status_code=303)
