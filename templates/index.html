@@ -9,14 +9,19 @@
 </head>
 <body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col justify-between">
 
+    <!-- Telegram Bot Link Variable -->
+    <script>
+        const TELEGRAM_BOT_USERNAME = "UstaGoOfficialBot"; // Botingiz foydalanuvchi nomi
+    </script>
+
     <!-- Header -->
     <header class="bg-indigo-600 text-white shadow-md sticky top-0 z-40">
         <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
             
-            <!-- Modern UstaGo SVG Logo & Branding -->
+            <!-- Logo -->
             <a href="/" class="flex items-center space-x-3 group">
-                <div class="relative flex items-center justify-center w-11 h-11 rounded-2xl bg-white shadow-md transition duration-300 transform group-hover:scale-105">
-                    <svg class="w-7 h-7" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <div class="relative flex items-center justify-center w-10 h-10 rounded-2xl bg-white shadow-md transition duration-300 transform group-hover:scale-105">
+                    <svg class="w-6 h-6" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <defs>
                             <linearGradient id="ustagoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
                                 <stop offset="0%" stop-color="#4F46E5" />
@@ -30,23 +35,28 @@
                 </div>
                 <div>
                     <div class="flex items-center gap-1">
-                        <span class="text-2xl font-black tracking-tight text-white">Usta</span>
-                        <span class="text-2xl font-black tracking-tight text-cyan-300">Go</span>
+                        <span class="text-xl font-black tracking-tight text-white">Usta</span>
+                        <span class="text-xl font-black tracking-tight text-cyan-300">Go</span>
                     </div>
-                    <p class="text-[10px] text-indigo-200 uppercase tracking-widest font-semibold">Tezkor Xizmatlar</p>
+                    <p class="text-[9px] text-indigo-200 uppercase tracking-widest font-semibold">Tezkor Xizmatlar</p>
                 </div>
             </a>
 
-            <!-- Shoshilinch Chaqiruv Button -->
-            <a href="tel:+998901112233" class="bg-red-500 hover:bg-red-600 text-white text-xs px-3.5 py-2 rounded-xl font-bold flex items-center gap-2 shadow-md transition transform hover:scale-105 animate-pulse">
-                <i class="fa-solid fa-bolt text-amber-300"></i>
-                <span class="hidden sm:inline">Shoshilinch Usta</span>
-            </a>
+            <!-- Right Header Actions -->
+            <div class="flex items-center space-x-2">
+                <button onclick="openApplyModal()" class="hidden sm:inline-flex items-center gap-1.5 bg-indigo-500 hover:bg-indigo-400 text-white text-xs px-3 py-2 rounded-xl font-semibold transition border border-indigo-400">
+                    <i class="fa-solid fa-user-plus"></i> Usta misiz?
+                </button>
+                <a href="tel:+998901112233" class="bg-red-500 hover:bg-red-600 text-white text-xs px-3 py-2 rounded-xl font-bold flex items-center gap-1.5 shadow-md transition transform hover:scale-105 animate-pulse">
+                    <i class="fa-solid fa-bolt text-amber-300"></i>
+                    <span>Shoshilinch Usta</span>
+                </a>
+            </div>
         </div>
     </header>
 
-    <!-- Asosiy mazmun -->
-    <main class="max-w-4xl mx-auto px-4 py-8 space-y-8 flex-1 w-full">
+    <!-- Main Container -->
+    <main class="max-w-4xl mx-auto px-4 py-6 space-y-6 flex-1 w-full">
 
         <!-- Hero banner -->
         <div class="relative overflow-hidden bg-gradient-to-r from-indigo-600 via-indigo-700 to-cyan-700 rounded-2xl p-6 text-white shadow-lg flex items-center justify-between">
@@ -56,30 +66,49 @@
                 </div>
                 <h2 class="text-2xl font-extrabold tracking-tight">Sizga qanday usta kerak?</h2>
                 <p class="text-indigo-100 text-sm">
-                    Maishiy texnika, elektronika va santexnika bo'yicha saralangan mutaxassislarni toping, qo'ng'iroq qiling yoki Telegram'da yozing.
+                    Maishiy texnika, elektronika va santexnika bo'yicha saralangan mutaxassislarni toping.
                 </p>
-            </div>
-            <div class="hidden sm:flex opacity-15 transform translate-x-4 rotate-12">
-                <svg class="w-36 h-36" viewBox="0 0 100 100" fill="currentColor">
-                    <path d="M50 8C31.2 8 16 23.2 16 42C16 63 42 88 50 92C58 88 84 63 84 42C84 23.2 68.8 8 50 8Z"/>
-                </svg>
             </div>
         </div>
 
-        <!-- Qidiruv va Filtr -->
+        <!-- 🔍 Live Search Bar (Tezkor Izlash) -->
+        <div class="relative">
+            <div class="relative flex items-center">
+                <i class="fa-solid fa-magnifying-glass absolute left-4 text-slate-400"></i>
+                <input type="text" id="live-search-input" oninput="handleLiveSearch()" placeholder="Xizmat, usta ismi yoki muammoni yozing (Masalan: Kir yuvish, Nodir, Chilonzor)..." 
+                    class="w-full bg-white border border-slate-200 rounded-2xl pl-11 pr-10 py-3.5 text-sm shadow-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none transition">
+                <button id="search-clear-btn" onclick="clearLiveSearch()" class="hidden absolute right-4 text-slate-400 hover:text-slate-600">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- 🏷️ Quick Tags (Tezkor Filtrlar) -->
+        <div class="flex items-center gap-2 overflow-x-auto pb-1 text-xs no-scrollbar">
+            <span class="text-slate-400 font-semibold whitespace-nowrap"><i class="fa-solid fa-fire text-amber-500"></i> Ommabop:</span>
+            <button onclick="quickFilter('Maishiy texnika', 'Kir yuvish mashinasi ta\'miri va tozalash')" class="bg-white hover:bg-indigo-50 text-slate-700 hover:text-indigo-600 px-3 py-1.5 rounded-xl border border-slate-200 font-medium whitespace-nowrap transition shadow-sm">🧼 Kir Yuvish</button>
+            <button onclick="quickFilter('Maishiy texnika', 'Konditsioner tozalash va freon quyish')" class="bg-white hover:bg-indigo-50 text-slate-700 hover:text-indigo-600 px-3 py-1.5 rounded-xl border border-slate-200 font-medium whitespace-nowrap transition shadow-sm">❄️ Konditsioner</button>
+            <button onclick="quickFilter('Elektronika va Gadjetlar', 'Smartfonlar va Mobil telefonlar')" class="bg-white hover:bg-indigo-50 text-slate-700 hover:text-indigo-600 px-3 py-1.5 rounded-xl border border-slate-200 font-medium whitespace-nowrap transition shadow-sm">📱 Telefon Usta</button>
+            <button onclick="quickFilter('Santexnika muammolari', 'Rakovina, krant va jo\'mraklar ta\'miri')" class="bg-white hover:bg-indigo-50 text-slate-700 hover:text-indigo-600 px-3 py-1.5 rounded-xl border border-slate-200 font-medium whitespace-nowrap transition shadow-sm">🚰 Santexnik</button>
+        </div>
+
+        <!-- Main Search & Filter Section -->
         <section class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 space-y-5">
-            <div class="flex items-center space-x-2 border-b border-slate-100 pb-4">
-                <i class="fa-solid fa-magnifying-glass text-indigo-600 text-lg"></i>
-                <h3 class="text-lg font-bold text-slate-800">Xizmat va Mutaxassis Izlash</h3>
+            <div class="flex items-center justify-between border-b border-slate-100 pb-4">
+                <div class="flex items-center space-x-2">
+                    <i class="fa-solid fa-sliders text-indigo-600 text-lg"></i>
+                    <h3 class="text-base font-bold text-slate-800">Filtr bo'yicha Saralash</h3>
+                </div>
+                <span class="text-xs text-slate-400" id="results-count-badge"></span>
             </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <!-- 1. Yo'nalish (Majburiy) -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-3">
+                <!-- 1. Yo'nalish -->
                 <div>
-                    <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
+                    <label class="block text-[11px] font-semibold text-slate-500 uppercase tracking-wider mb-1.5">
                         1. Yo'nalish <span class="text-red-500 font-bold lowercase">(majburiy)</span>
                     </label>
-                    <select id="category-select" onchange="onCategoryChange()" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-sm focus:ring-2 focus:ring-indigo-500 focus:bg-white outline-none transition">
+                    <select id="category-select" onchange="onCategoryChange()" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-indigo-500 focus:bg-white outline-none transition">
                         <option value="">-- Yo'nalishni tanlang --</option>
                         {% for category in categories.keys() %}
                             <option value="{{ category }}">{{ category }}</option>
@@ -87,91 +116,133 @@
                     </select>
                 </div>
 
-                <!-- 2. Xizmat turi (Majburiy) -->
+                <!-- 2. Xizmat turi -->
                 <div>
-                    <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
+                    <label class="block text-[11px] font-semibold text-slate-500 uppercase tracking-wider mb-1.5">
                         2. Xizmat turi <span class="text-red-500 font-bold lowercase">(majburiy)</span>
                     </label>
-                    <select id="service-select" disabled onchange="onServiceChange()" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-sm focus:ring-2 focus:ring-indigo-500 focus:bg-white outline-none transition disabled:opacity-50">
+                    <select id="service-select" disabled onchange="onServiceChange()" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-indigo-500 focus:bg-white outline-none transition disabled:opacity-50">
                         <option value="">-- Avval yo'nalishni tanlang --</option>
                     </select>
                 </div>
 
-                <!-- 3. Qurilma / Texnika brendi (Ixtiyoriy - matn kiritiladigan input) -->
+                <!-- 3. Tuman / Hudud (Yangi!) -->
                 <div>
-                    <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
-                        3. Brend va model <span class="text-slate-400 font-normal lowercase">(ixtiyoriy)</span>
+                    <label class="block text-[11px] font-semibold text-slate-500 uppercase tracking-wider mb-1.5">
+                        3. Tuman <span class="text-slate-400 font-normal lowercase">(ixtiyoriy)</span>
                     </label>
-                    <input type="text" id="brand-input" placeholder="Masalan: Samsung, LG, iPhone 13..." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-sm focus:ring-2 focus:ring-indigo-500 focus:bg-white outline-none transition">
+                    <select id="district-select" onchange="fetchTechnicians()" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-indigo-500 focus:bg-white outline-none transition">
+                        {% for d in districts %}
+                            <option value="{{ d }}">{{ d }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- 4. Brend / Model -->
+                <div>
+                    <label class="block text-[11px] font-semibold text-slate-500 uppercase tracking-wider mb-1.5">
+                        4. Brend / Model <span class="text-slate-400 font-normal lowercase">(ixtiyoriy)</span>
+                    </label>
+                    <input type="text" id="brand-input" placeholder="Samsung, LG..." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-indigo-500 focus:bg-white outline-none transition">
                 </div>
             </div>
 
-            <!-- Taxminiy Narxlar Kalkulyatori Card -->
-            <div id="price-estimator-card" class="hidden bg-amber-50/80 border border-amber-200 rounded-xl p-4 flex items-center justify-between">
+            <!-- Taxminiy Narxlar Kalkulyatori -->
+            <div id="price-estimator-card" class="hidden bg-amber-50/80 border border-amber-200 rounded-xl p-3.5 flex items-center justify-between">
                 <div class="flex items-center gap-3">
-                    <div class="w-9 h-9 rounded-lg bg-amber-500 text-white flex items-center justify-center font-bold text-lg">
+                    <div class="w-8 h-8 rounded-lg bg-amber-500 text-white flex items-center justify-center font-bold text-base shadow-sm">
                         🏷️
                     </div>
                     <div>
-                        <p class="text-xs font-bold text-amber-900 uppercase tracking-wider">Ushbu xizmatning taxminiy narxi:</p>
-                        <p id="price-estimate-text" class="text-sm font-extrabold text-amber-700">100,000 - 200,000 so'm</p>
+                        <p class="text-[10px] font-bold text-amber-900 uppercase tracking-wider">Taxminiy xizmat narxi:</p>
+                        <p id="price-estimate-text" class="text-xs font-extrabold text-amber-800">100,000 - 200,000 so'm</p>
                     </div>
                 </div>
-                <span class="text-[11px] text-amber-600 bg-amber-100 px-2.5 py-1 rounded-md font-medium">Bozor o'rtacha narxi</span>
+                <span class="text-[10px] text-amber-700 bg-amber-100 px-2 py-0.5 rounded font-medium">Bozor narxi</span>
             </div>
 
             <!-- Ustalar ro'yxati -->
-            <div id="technicians-list" class="pt-2">
+            <div id="technicians-list" class="pt-1">
                 <div class="text-center py-8 bg-slate-50 rounded-xl border border-dashed border-slate-200">
-                    <p class="text-slate-400 text-sm">Yo'nalish va xizmat turini tanlasangiz, ustalar va taxminiy narxlar ko'rinadi.</p>
+                    <p class="text-slate-400 text-xs">Yo'nalish va xizmat turini tanlang yoki qidiruv qatoridan izlang.</p>
                 </div>
             </div>
         </section>
-
     </main>
 
-    <!-- MODAL: Usta Profil, Sharhlar va Portfelyo -->
-    <div id="reviews-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl max-w-lg w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden border border-slate-100 transition-all">
-            
-            <div class="p-5 bg-slate-50 border-b border-slate-100 flex justify-between items-center">
-                <div>
-                    <h3 id="modal-worker-name" class="font-bold text-slate-800 text-lg flex items-center gap-2">👨‍🔧 Usta Ma'lumotlari</h3>
-                    <p id="modal-worker-stats" class="text-xs text-slate-500 mt-0.5"></p>
-                </div>
-                <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600 p-2 rounded-lg hover:bg-slate-200/50 transition">
+    <!-- MODAL: Usta bo'lib ro'yxatdan o'tish -->
+    <div id="apply-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-100 space-y-4">
+            <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+                <h3 class="font-bold text-slate-800 text-base">👷‍♂️ Ustalar Safiga Qo'shilish</h3>
+                <button onclick="closeApplyModal()" class="text-slate-400 hover:text-slate-600">
                     <i class="fa-solid fa-xmark text-lg"></i>
                 </button>
             </div>
+            <p class="text-xs text-slate-500">Platformamizda o'z xizmatlaringizni taklif qiling va doimiy mijozlarga ega bo'ling.</p>
+            <form action="/apply-as-master" method="post" class="space-y-3">
+                <div>
+                    <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">F.I.SH (Ism va Familiyangiz)</label>
+                    <input type="text" name="full_name" required placeholder="Nodirbek Karimov" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-indigo-500 outline-none">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Telefon raqamingiz</label>
+                    <input type="tel" name="phone" required placeholder="+998901234567" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-indigo-500 outline-none">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Yo'nalishingiz</label>
+                    <select name="category" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-indigo-500 outline-none">
+                        {% for category in categories.keys() %}
+                            <option value="{{ category }}">{{ category }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Faoliyat tumaningiz</label>
+                    <select name="district" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-indigo-500 outline-none">
+                        {% for d in districts[1:] %}
+                            <option value="{{ d }}">{{ d }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 rounded-xl text-xs transition shadow-md">Arizani Yuborish</button>
+            </form>
+        </div>
+    </div>
 
-            <div class="px-5 pt-3 pb-2 bg-indigo-50/50 border-b border-slate-100 flex items-center justify-between text-xs text-indigo-900 font-medium">
-                <span class="flex items-center gap-1.5"><i class="fa-solid fa-shield-halved text-emerald-600"></i> Rasmiy Kafolat: 6 oy</span>
-                <span class="flex items-center gap-1.5"><i class="fa-solid fa-truck-fast text-indigo-600"></i> Yetib kelish: 30-40 daqiqa</span>
+    <!-- MODAL: Usta Profil & Sharhlar -->
+    <div id="reviews-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-lg w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden border border-slate-100">
+            <div class="p-4 bg-slate-50 border-b border-slate-100 flex justify-between items-center">
+                <div>
+                    <h3 id="modal-worker-name" class="font-bold text-slate-800 text-base flex items-center gap-2">👨‍🔧 Usta Ma'lumotlari</h3>
+                    <p id="modal-worker-stats" class="text-xs text-slate-500 mt-0.5"></p>
+                </div>
+                <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600 p-1.5 rounded-lg hover:bg-slate-200/50">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
             </div>
-
-            <div id="modal-reviews-content" class="p-5 overflow-y-auto space-y-4 flex-1"></div>
-
-            <div class="p-5 bg-slate-50 border-t border-slate-100 space-y-3">
-                <h4 class="text-xs font-bold text-slate-700 uppercase tracking-wider">Sharh va baho qoldirish</h4>
-                <form action="/add-worker-review" method="post" class="space-y-3">
+            <div id="modal-reviews-content" class="p-4 overflow-y-auto space-y-3 flex-1"></div>
+            <div class="p-4 bg-slate-50 border-t border-slate-100 space-y-2">
+                <h4 class="text-[11px] font-bold text-slate-700 uppercase tracking-wider">Sharh va baho qoldirish</h4>
+                <form action="/add-worker-review" method="post" class="space-y-2">
                     <input type="hidden" id="form-worker-name" name="worker_name" value="">
-                    <div class="grid grid-cols-2 gap-3">
-                        <input type="text" name="client_name" placeholder="Ismingiz" required class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-indigo-500 outline-none">
-                        <select name="rating" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-indigo-500 outline-none">
+                    <div class="grid grid-cols-2 gap-2">
+                        <input type="text" name="client_name" placeholder="Ismingiz" required class="w-full bg-white border border-slate-200 rounded-xl px-3 py-1.5 text-xs outline-none">
+                        <select name="rating" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-1.5 text-xs outline-none">
                             <option value="5">⭐⭐⭐⭐⭐ (5/5)</option>
                             <option value="4">⭐⭐⭐⭐ (4/5)</option>
                             <option value="3">⭐⭐⭐ (3/5)</option>
-                            <option value="2">⭐⭐ (2/5)</option>
-                            <option value="1">⭐ (1/5)</option>
                         </select>
                     </div>
-                    <textarea name="comment" placeholder="Fikringiz..." required rows="2" class="w-full bg-white border border-slate-200 rounded-xl p-2.5 text-xs focus:ring-2 focus:ring-indigo-500 outline-none"></textarea>
-                    <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 rounded-xl text-xs transition duration-200 shadow-sm">Sharhni Saqlash</button>
+                    <textarea name="comment" placeholder="Fikringiz..." required rows="2" class="w-full bg-white border border-slate-200 rounded-xl p-2 text-xs outline-none"></textarea>
+                    <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 rounded-xl text-xs transition">Sharhni Saqlash</button>
                 </form>
             </div>
         </div>
     </div>
 
+    <!-- Scripts -->
     <script>
         const REVIEWS_DB = {{ reviews_db | tojson }};
 
@@ -208,13 +279,15 @@
         async function fetchTechnicians() {
             const category = document.getElementById('category-select').value;
             const service = document.getElementById('service-select').value;
+            const district = document.getElementById('district-select').value;
             const priceEstimator = document.getElementById('price-estimator-card');
             const priceText = document.getElementById('price-estimate-text');
             const container = document.getElementById('technicians-list');
 
             if (!category || !service) return;
 
-            const res = await fetch(`/api/technicians?category=${encodeURIComponent(category)}&service=${encodeURIComponent(service)}`);
+            const url = `/api/technicians?category=${encodeURIComponent(category)}&service=${encodeURIComponent(service)}&district=${encodeURIComponent(district)}`;
+            const res = await fetch(url);
             const data = await res.json();
 
             if (data.price_estimate) {
@@ -222,16 +295,69 @@
                 priceEstimator.classList.remove('hidden');
             }
 
-            if (data.workers.length === 0) {
-                container.innerHTML = `<div class="p-6 text-center text-slate-500 text-sm bg-slate-50 rounded-xl">Hozircha ustalar topilmadi.</div>`;
+            renderWorkersList(data.workers);
+        }
+
+        // Live Search Handler
+        let searchTimeout = null;
+        function handleLiveSearch() {
+            const query = document.getElementById('live-search-input').value;
+            const clearBtn = document.getElementById('search-clear-btn');
+            
+            if (query.trim().length > 0) {
+                clearBtn.classList.remove('hidden');
+            } else {
+                clearBtn.classList.add('hidden');
+            }
+
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(async () => {
+                if (query.trim().length < 2) return;
+                
+                const res = await fetch(`/api/search?query=${encodeURIComponent(query)}`);
+                const data = await res.json();
+                renderWorkersList(data.workers, true);
+            }, 300);
+        }
+
+        function clearLiveSearch() {
+            document.getElementById('live-search-input').value = '';
+            document.getElementById('search-clear-btn').classList.add('hidden');
+            document.getElementById('technicians-list').innerHTML = `
+                <div class="text-center py-8 bg-slate-50 rounded-xl border border-dashed border-slate-200">
+                    <p class="text-slate-400 text-xs">Yo'nalish va xizmat turini tanlang yoki qidiruv qatoridan izlang.</p>
+                </div>`;
+        }
+
+        // Quick Tag Filter
+        async function quickFilter(category, service) {
+            document.getElementById('category-select').value = category;
+            await onCategoryChange();
+            document.getElementById('service-select').value = service;
+            fetchTechnicians();
+        }
+
+        // Render Workers Function
+        function renderWorkersList(workers, isSearch = false) {
+            const container = document.getElementById('technicians-list');
+
+            if (workers.length === 0) {
+                container.innerHTML = `<div class="p-6 text-center text-slate-500 text-xs bg-slate-50 rounded-xl">Hozircha ustalar topilmadi.</div>`;
                 return;
             }
 
-            let html = '<div class="grid grid-cols-1 md:grid-cols-2 gap-4">';
-            data.workers.forEach(w => {
+            let html = '<div class="grid grid-cols-1 md:grid-cols-2 gap-3.5">';
+            workers.forEach(w => {
                 const tgPhone = w.phone.replace('+', '');
+                const brandVal = document.getElementById('brand-input').value.trim();
+                const noteText = brandVal ? ` (Brend: ${brandVal})` : '';
+                
+                // Telegram orqali avto-buyurtma silkasi
+                const tgMessage = encodeURIComponent(`Salom! Men UstaGo platformasidan sizga murojaat qilyapman. Xizmat: ${w.service || 'Ta\'mir'}${noteText}.`);
+                const tgUrl = `https://t.me/${tgPhone}?text=${tgMessage}`;
+
                 const verifiedBadge = w.verified 
-                    ? `<span class="inline-flex items-center gap-1 text-[11px] font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full"><i class="fa-solid fa-circle-check"></i> Tasdiqlangan</span>`
+                    ? `<span class="inline-flex items-center gap-1 text-[10px] font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full"><i class="fa-solid fa-circle-check"></i> Tasdiqlangan</span>`
                     : '';
 
                 html += `
@@ -239,29 +365,28 @@
                         <div class="flex justify-between items-start">
                             <div>
                                 <div class="flex items-center gap-1.5">
-                                    <h4 class="font-bold text-slate-800 text-base">${w.name}</h4>
+                                    <h4 class="font-bold text-slate-800 text-sm">${w.name}</h4>
                                     ${verifiedBadge}
                                 </div>
-                                <div class="flex items-center space-x-2 text-xs text-slate-500 mt-1">
+                                <div class="flex items-center space-x-2 text-[11px] text-slate-500 mt-1">
                                     <span class="text-amber-500 font-bold">⭐ ${w.rating}</span>
                                     <span>•</span>
                                     <span>${w.reviews_count} sharh</span>
                                     <span>•</span>
-                                    <span class="text-indigo-600 font-medium">${w.distance}</span>
+                                    <span class="text-indigo-600 font-medium"><i class="fa-solid fa-location-dot"></i> ${w.district || w.distance}</span>
                                 </div>
                             </div>
-                            <span class="bg-emerald-50 text-emerald-700 text-xs px-2.5 py-1 rounded-full font-medium">Bo'sh</span>
+                            <span class="bg-emerald-50 text-emerald-700 text-[10px] px-2 py-0.5 rounded-full font-medium">Bo'sh</span>
                         </div>
 
-                        <!-- Qo'ng'iroq, Telegram va Sharhlar tugmalari -->
                         <div class="grid grid-cols-3 gap-2 pt-1">
-                            <a href="tel:${w.phone}" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2 rounded-xl text-xs transition flex items-center justify-center gap-1 shadow-sm">
+                            <a href="tel:${w.phone}" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-1.5 rounded-xl text-xs transition flex items-center justify-center gap-1 shadow-sm">
                                 <i class="fa-solid fa-phone"></i> Qo'ng'iroq
                             </a>
-                            <a href="https://t.me/${tgPhone}" target="_blank" class="bg-sky-500 hover:bg-sky-600 text-white font-semibold py-2 rounded-xl text-xs transition flex items-center justify-center gap-1 shadow-sm">
+                            <a href="${tgUrl}" target="_blank" class="bg-sky-500 hover:bg-sky-600 text-white font-semibold py-1.5 rounded-xl text-xs transition flex items-center justify-center gap-1 shadow-sm">
                                 <i class="fa-brands fa-telegram"></i> Telegram
                             </a>
-                            <button onclick="openModal('${w.name}', '${w.rating}', '${w.reviews_count}')" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-semibold py-2 rounded-xl text-xs transition">
+                            <button onclick="openModal('${w.name}', '${w.rating}', '${w.reviews_count}')" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-semibold py-1.5 rounded-xl text-xs transition">
                                 Sharhlar
                             </button>
                         </div>
@@ -286,10 +411,10 @@
                 let html = '';
                 reviews.forEach(r => {
                     html += `
-                        <div class="bg-slate-50 p-3 rounded-xl border border-slate-100 space-y-1">
+                        <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-100 space-y-1">
                             <div class="flex justify-between items-center">
                                 <span class="font-bold text-xs text-slate-800">${r.client}</span>
-                                <span class="text-xs">${'⭐'.repeat(r.rating)}</span>
+                                <span class="text-[10px]">${'⭐'.repeat(r.rating)}</span>
                             </div>
                             <p class="text-xs text-slate-600">${r.comment}</p>
                         </div>
@@ -301,9 +426,9 @@
             document.getElementById('reviews-modal').classList.remove('hidden');
         }
 
-        function closeModal() {
-            document.getElementById('reviews-modal').classList.add('hidden');
-        }
+        function closeModal() { document.getElementById('reviews-modal').classList.add('hidden'); }
+        function openApplyModal() { document.getElementById('apply-modal').classList.remove('hidden'); }
+        function closeApplyModal() { document.getElementById('apply-modal').classList.add('hidden'); }
     </script>
 </body>
 </html>
