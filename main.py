@@ -4,10 +4,8 @@ from fastapi.templating import Jinja2Templates
 
 app = FastAPI(title="UstaGo API")
 
-# Shablonlar papkasi
 templates = Jinja2Templates(directory="templates")
 
-# Ma'lumotlar bazasi (kategoriyalar, xizmatlar va ustalar)
 SERVICES_DB = {
     "Maishiy texnika": {
         "Kir yuvish mashinasiga gigiyenik xizmat ko'rsatish va tozalash": [
@@ -68,13 +66,16 @@ async def read_root(request: Request):
                 if w[0] not in all_workers:
                     all_workers.append(w[0])
 
-    return templates.TemplateResponse("index.html", {
-        "request": request,
-        "categories": SERVICES_DB,
-        "brands": BRANDS,
-        "workers": all_workers,
-        "reviews_db": WORKER_REVIEWS_DB
-    })
+    return templates.TemplateResponse(
+        request=request,
+        name="index.html",
+        context={
+            "categories": SERVICES_DB,
+            "brands": BRANDS,
+            "workers": all_workers,
+            "reviews_db": WORKER_REVIEWS_DB
+        }
+    )
 
 @app.get("/get-services")
 async def get_services(category: str):
