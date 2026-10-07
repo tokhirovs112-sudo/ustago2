@@ -15,7 +15,6 @@ class SilentUndefined(Undefined):
     def __call__(self, *args, **kwargs):
         return self
 
-# Debug rejimini yoqamiz, shunda xato chiqsa brauzerning o'zida yorqin qizil bo'lib ko'rinadi
 app = FastAPI(title="UstaGo Platformasi", debug=True)
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
@@ -44,15 +43,75 @@ async def bot_webhook(request: Request):
     await dp.feed_update(bot, update)
     return {"status": "ok"}
 
+# To'liq ma'lumotlar bazasi (Kategoriyalar va xizmatlar)
+CATEGORIES_DB = {
+    "Maishiy texnika": {
+        "icon": "Wrench",
+        "services": ["Kir yuvish mashinasi", "Sovutgich", "Televizor", "Mikroto'lqinli pech"]
+    },
+    "Santexnika": {
+        "icon": "Droplet",
+        "services": ["Krani almashtirish", "Unitaz o'rnatish", "Truba tozalash", "Nasos ta'mirlash"]
+    },
+    "Elektrik": {
+        "icon": "Zap",
+        "services": ["Rozetka o'rnatish", "Lyustra osish", "Simlar almashinuvi", "Avtomat qo'yish"]
+    },
+    "Konditsioner": {
+        "icon": "Wind",
+        "services": ["Fread quyish", "Tozalash", "Montaj qilish", "Ta'mirlash"]
+    }
+}
+
+TECHNICIANS_DB = [
+    {
+        "id": 1,
+        "name": "Jasur Rahimov",
+        "category": "Maishiy texnika",
+        "service": "Kir yuvish mashinasi",
+        "district": "Yunusobod",
+        "rating": 4.9,
+        "reviews_count": 28,
+        "phone": "+998 90 123 45 67",
+        "price": "50,000 so'mdan"
+    },
+    {
+        "id": 2,
+        "name": "Sardor Azimov",
+        "category": "Santexnika",
+        "service": "Krani almashtirish",
+        "district": "Chilonzor",
+        "rating": 4.8,
+        "reviews_count": 19,
+        "phone": "+998 91 987 65 43",
+        "price": "40,000 so'mdan"
+    },
+    {
+        "id": 3,
+        "name": "Bekzod Karimov",
+        "category": "Elektrik",
+        "service": "Rozetka o'rnatish",
+        "district": "Mirzo Ulug'bek",
+        "rating": 5.0,
+        "reviews_count": 34,
+        "phone": "+998 93 333 22 11",
+        "price": "30,000 so'mdan"
+    },
+    {
+        "id": 4,
+        "name": "Anvar Tursunov",
+        "category": "Konditsioner",
+        "service": "Tozalash",
+        "district": "Mirobod",
+        "rating": 4.7,
+        "reviews_count": 15,
+        "phone": "+998 99 777 55 44",
+        "price": "80,000 so'mdan"
+    }
+]
+
 @app.get("/")
 async def home(request: Request):
-    categories_data = {
-        "Maishiy texnika": "Wrench",
-        "Santexnika": "Droplet",
-        "Elektrik": "Zap",
-        "Konditsioner": "Wind"
-    }
-    
     districts_data = [
         "Barchasi (Hudud bo'yicha)",
         "Yunusobod",
@@ -67,53 +126,47 @@ async def home(request: Request):
         "Sergeli"
     ]
     
-    reviews_db = []
-    
     return templates.TemplateResponse(
         request, 
         "index.html", 
         {
             "request": request, 
-            "categories": categories_data,
+            "categories": CATEGORIES_DB,
             "districts": districts_data,
-            "reviews_db": reviews_db
+            "reviews_db": []
         }
     )
 
 @app.get("/api/services")
 async def get_services(category: str = ""):
-    return [
-        {"id": 1, "name": "Maishiy texnika ta'miri", "icon": "Wrench"},
-        {"id": 2, "name": "Santexnika xizmati", "icon": "Droplet"},
-        {"id": 3, "name": "Elektrik xizmati", "icon": "Zap"},
-        {"id": 4, "name": "Konditsioner ustalari", "icon": "Wind"}
-    ]
+    if category and category in CATEGORIES_DB:
+        return [{"name": s} for s in CATEGORIES_DB[category]["services"]]
+    
+    # Agar kategoriya berilmagan bo'lsa, hamma xizmatlarni qaytaramiz
+    all_services = []
+    for cat_name, cat_data in CATEGORIES_DB.items():
+        for s in cat_data["services"]:
+            all_services.append({"name": s, "category": cat_name})
+    return all_services
 
 @app.get("/api/technicians")
 async def get_technicians(category: str = "", service: str = "", district: str = ""):
-    return [
-        {
-            "id": 1,
-            "name": "Jasur Rahimov",
-            "specialty": service or "Maishiy texnika ustasi",
-            "rating": 4.9,
-            "reviews_count": 28,
-            "phone": "+998 90 123 45 67"
-        },
-        {
-            "id": 2,
-            "name": "Sardor Azimov",
-            "specialty": service or "Professional Usta",
-            "rating": 4.8,
-            "reviews_count": 19,
-            "phone": "+998 91 987 65 43"
-        }
-    ]
+    result = TECHNICIANS_DB
+    if category:
+        result = [t for t in result if t["category"] == category]
+    if service:
+        result = [t for t in result if t["service"] == service]
+    if district and district != "Barchasi (Hudud bo'yicha)":
+        result = [t for t in result if t["district"] == district]
+    return result
 
 @app.get("/api/search")
 async def search_services(query: str = ""):
-    all_services = await get_services()
     if not query:
-        return all_services
-    filtered = [s for s in all_services if query.lower() in s["name"].lower()]
-    return filtered
+        return []
+    matched = []
+    for cat_name, cat_data in CATEGORIES_DB.items():
+        for s in cat_data["services"]:
+            if query.lower() in s.lower() or query.lower() in cat_name.lower():
+                matched.append({"name": s, "category": cat_name})
+    return matched
