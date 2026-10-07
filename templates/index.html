@@ -7,9 +7,10 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
-<body class="bg-slate-50 text-slate-800 antialiased min-h-screen">
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col justify-between">
 
-    <header class="bg-indigo-600 text-white shadow-lg sticky top-0 z-50">
+    <!-- Header -->
+    <header class="bg-indigo-600 text-white shadow-md sticky top-0 z-40">
         <div class="max-w-4xl mx-auto px-4 py-4 flex justify-between items-center">
             <div class="flex items-center space-x-3">
                 <div class="bg-white text-indigo-600 p-2 rounded-xl font-black text-xl shadow-sm">
@@ -17,7 +18,7 @@
                 </div>
                 <div>
                     <h1 class="text-xl font-bold tracking-tight">UstaGo</h1>
-                    <p class="text-xs text-indigo-200">Tezkor va ishonchli xizmatlar</p>
+                    <p class="text-xs text-indigo-200">Tezkor va ishonchli xizmatlar platformasi</p>
                 </div>
             </div>
             <span class="bg-indigo-500 text-indigo-100 text-xs px-3 py-1 rounded-full font-medium border border-indigo-400/30">
@@ -26,12 +27,14 @@
         </div>
     </header>
 
-    <main class="max-w-4xl mx-auto px-4 py-8 space-y-8">
+    <!-- Asosiy mazmun -->
+    <main class="max-w-4xl mx-auto px-4 py-8 space-y-8 flex-1 w-full">
 
+        <!-- Hero banner -->
         <div class="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-2xl p-6 text-white shadow-md">
             <h2 class="text-2xl font-extrabold mb-2">Sizga qanday usta kerak?</h2>
             <p class="text-indigo-100 text-sm max-w-xl">
-                Maishiy texnika, elektronika yoki santexnika muammolaringiz uchun tajribali ustalarni toping.
+                Maishiy texnika, elektronika va santexnika bo'yicha saralangan mutaxassislarni toping hamda mijozlar sharhlari bilan tanishing.
             </p>
         </div>
 
@@ -44,9 +47,9 @@
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
-                    <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">1. Bo'lim</label>
+                    <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">1. Yo'nalish</label>
                     <select id="category-select" onchange="onCategoryChange()" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-sm focus:ring-2 focus:ring-indigo-500 focus:bg-white outline-none transition">
-                        <option value="">-- Bo'limni tanlang --</option>
+                        <option value="">-- Yo'nalishni tanlang --</option>
                         {% for category in categories.keys() %}
                             <option value="{{ category }}">{{ category }}</option>
                         {% endfor %}
@@ -54,9 +57,9 @@
                 </div>
 
                 <div>
-                    <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">2. Xizmat Turi</label>
+                    <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">2. Xizmat turi</label>
                     <select id="service-select" disabled onchange="onServiceChange()" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-sm focus:ring-2 focus:ring-indigo-500 focus:bg-white outline-none transition disabled:opacity-50">
-                        <option value="">-- Avval bo'limni tanlang --</option>
+                        <option value="">-- Avval yo'nalishni tanlang --</option>
                     </select>
                 </div>
 
@@ -68,22 +71,21 @@
                 </div>
             </div>
 
-            <!-- Custom Textarea (Boshqa muammo tanlanganda) -->
+            <!-- Boshqa muammo maydoni -->
             <div id="custom-problem-container" class="hidden pt-2">
-                <label class="block text-xs font-semibold text-amber-600 uppercase tracking-wider mb-2">Muammoingizni batafsil yozib bering:</label>
-                <textarea id="custom-problem-text" rows="3" placeholder="Masalan: Krantdan issiq suv oqmayapti va pastki qavatga suv otyapti..." class="w-full bg-amber-50/50 border border-amber-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-amber-500 outline-none"></textarea>
+                <label class="block text-xs font-semibold text-amber-600 uppercase tracking-wider mb-2">Muammoingizni batafsil tasvirlab bering:</label>
+                <textarea id="custom-problem-text" rows="3" placeholder="Masalan: Krantdan issiq suv oqmayapti va quvurlarda shovqin bor..." class="w-full bg-amber-50/50 border border-amber-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-amber-500 outline-none"></textarea>
             </div>
 
-            <!-- Interaktiv Telefon Diagnostikasi (Wizard Interface) -->
+            <!-- Telefon Diagnostikasi (Wizard) -->
             <div id="phone-wizard" class="hidden bg-indigo-50/70 border border-indigo-200 rounded-2xl p-5 space-y-4">
                 <div class="flex items-center justify-between border-b border-indigo-100 pb-3">
                     <h4 class="font-bold text-indigo-900 text-sm flex items-center gap-2">
-                        <i class="fa-solid fa-mobile-screen-button text-indigo-600"></i> Telefon Diagnostikasi (Interaktiv Rejim)
+                        <i class="fa-solid fa-mobile-screen-button text-indigo-600"></i> Telefon Diagnostikasi (Interaktiv rejim)
                     </h4>
                     <span id="wizard-step-badge" class="text-xs bg-indigo-200 text-indigo-800 font-bold px-2.5 py-0.5 rounded-full">1 / 3 - Savol</span>
                 </div>
 
-                <!-- Step 1 -->
                 <div id="wizard-step-1" class="space-y-3">
                     <p class="text-sm font-semibold text-slate-800">1. Telefon suvga tushganmi yoki namlik tekkanmi?</p>
                     <div class="flex gap-3">
@@ -92,32 +94,29 @@
                     </div>
                 </div>
 
-                <!-- Step 2 -->
                 <div id="wizard-step-2" class="hidden space-y-3">
-                    <p class="text-sm font-semibold text-slate-800">2. Telefon sekin ishlayaptimi yoki qotyaptimi?</p>
+                    <p class="text-sm font-semibold text-slate-800">2. Qotish yoki sekin ishlash holatlari bormi?</p>
                     <div class="flex gap-3">
                         <button onclick="answerQuestion(2, 'Ha')" class="flex-1 bg-white border border-slate-300 hover:border-indigo-500 hover:bg-indigo-50 font-medium py-2 rounded-xl text-sm transition">Ha</button>
                         <button onclick="answerQuestion(2, 'Yoq')" class="flex-1 bg-white border border-slate-300 hover:border-indigo-500 hover:bg-indigo-50 font-medium py-2 rounded-xl text-sm transition">Yo'q</button>
                     </div>
                 </div>
 
-                <!-- Step 3 -->
                 <div id="wizard-step-3" class="hidden space-y-3">
-                    <p class="text-sm font-semibold text-slate-800">3. Ekrani yoki korpusi shikastlanganmi (sinish/chiziqlar)?</p>
+                    <p class="text-sm font-semibold text-slate-800">3. Ekran yoki korpusda jismoniy shikastlanish bormi?</p>
                     <div class="flex gap-3">
                         <button onclick="answerQuestion(3, 'Ha')" class="flex-1 bg-white border border-slate-300 hover:border-indigo-500 hover:bg-indigo-50 font-medium py-2 rounded-xl text-sm transition">Ha</button>
                         <button onclick="answerQuestion(3, 'Yoq')" class="flex-1 bg-white border border-slate-300 hover:border-indigo-500 hover:bg-indigo-50 font-medium py-2 rounded-xl text-sm transition">Yo'q</button>
                     </div>
                 </div>
 
-                <!-- Result summary -->
                 <div id="wizard-result" class="hidden bg-white p-4 rounded-xl border border-indigo-100 text-xs text-indigo-900 space-y-1">
                     <p class="font-bold">Diagnostika Xulosasi:</p>
                     <p id="wizard-summary-text" class="text-slate-600"></p>
                 </div>
             </div>
 
-            <!-- Ustalar Ro'yxati -->
+            <!-- Ustalar ro'yxati konteyneri -->
             <div id="technicians-list" class="pt-4">
                 <div class="text-center py-8 bg-slate-50 rounded-xl border border-dashed border-slate-200">
                     <p class="text-slate-400 text-sm">Xizmat turini tanlasangiz, saralangan ustalar ro'yxati shu yerda ko'rinadi.</p>
@@ -125,94 +124,64 @@
             </div>
         </section>
 
-        <!-- Izohlar va Fikrlar -->
-        <section class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 space-y-4">
-            <div class="flex items-center space-x-2 border-b border-slate-100 pb-4">
-                <i class="fa-solid fa-star text-amber-500 text-lg"></i>
-                <h3 class="text-lg font-bold text-slate-800">Ustalarga Berilgan Izohlar va Baholar</h3>
-            </div>
-
-            <div id="reviews-list" class="space-y-4">
-                {% if reviews_db %}
-                    {% for worker, reviews in reviews_db.items() %}
-                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 space-y-3">
-                            <div class="flex items-center justify-between">
-                                <h4 class="font-bold text-indigo-600 flex items-center gap-2">
-                                    <i class="fa-solid fa-user-gear text-slate-400"></i> {{ worker }}
-                                </h4>
-                                <span class="text-xs bg-indigo-50 text-indigo-600 px-2.5 py-1 rounded-full font-medium">Usta</span>
-                            </div>
-                            <div class="space-y-2">
-                                {% for r in reviews %}
-                                    <div class="bg-white p-3 rounded-lg border border-slate-100 text-sm space-y-2">
-                                        <div class="flex justify-between items-center">
-                                            <span class="font-semibold text-slate-700">{{ r.client }}</span>
-                                            <span class="text-amber-500 font-bold text-xs">
-                                                <i class="fa-solid fa-star"></i> {{ r.rating }}/5
-                                            </span>
-                                        </div>
-                                        <p class="text-slate-600 text-xs italic">"{{ r.comment }}"</p>
-                                    </div>
-                                {% endfor %}
-                            </div>
-                        </div>
-                    {% endfor %}
-                {% else %}
-                    <p class="text-slate-400 text-sm text-center py-4">Hali hech qanday ustaga izoh qoldirilmagan.</p>
-                {% endif %}
-            </div>
-        </section>
-
-        <!-- Izoh Qoldirish Formasi -->
-        <section class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 space-y-4">
-            <div class="flex items-center space-x-2 border-b border-slate-100 pb-4">
-                <i class="fa-solid fa-comment-dots text-emerald-600 text-lg"></i>
-                <h3 class="text-lg font-bold text-slate-800">Ustaga Fikr yoki Izoh Qoldirish</h3>
-            </div>
-
-            <form action="/add-worker-review" method="post" class="space-y-4">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Ustani Tanlang</label>
-                        <select name="worker_name" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
-                            {% for worker in workers %}
-                                <option value="{{ worker }}">{{ worker }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Ismingiz</label>
-                        <input type="text" name="client_name" placeholder="Masalan: Murod" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Baho</label>
-                        <select name="rating" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
-                            <option value="5">⭐⭐⭐⭐⭐ (5/5) - A'lo</option>
-                            <option value="4">⭐⭐⭐⭐ (4/5) - Yaxshi</option>
-                            <option value="3">⭐⭐⭐ (3/5) - Qoniqarli</option>
-                            <option value="2">⭐⭐ (2/5) - Qoniqarsiz</option>
-                            <option value="1">⭐ (1/5) - Yomon</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div>
-                    <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Sizning Izohingiz</label>
-                    <textarea name="comment" placeholder="Ustanining xizmati haqida fikringizni yozib qoldiring..." required rows="3" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-emerald-500 outline-none"></textarea>
-                </div>
-
-                <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl transition duration-200 shadow-md hover:shadow-lg">
-                    Izohni Saqlash
-                </button>
-            </form>
-        </section>
-
     </main>
 
+    <!-- MODAL: Usta haqida ma'lumot va otzivlar -->
+    <div id="reviews-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-lg w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden border border-slate-100 transition-all">
+            
+            <!-- Modal Header -->
+            <div class="p-5 bg-slate-50 border-b border-slate-100 flex justify-between items-center">
+                <div>
+                    <h3 id="modal-worker-name" class="font-bold text-slate-800 text-lg flex items-center gap-2">
+                        👨‍🔧 Usta Ma'lumotlari
+                    </h3>
+                    <p id="modal-worker-stats" class="text-xs text-slate-500 mt-0.5"></p>
+                </div>
+                <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600 p-2 rounded-lg hover:bg-slate-200/50 transition">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <!-- Modal Content (Otzivlar ro'yxati) -->
+            <div id="modal-reviews-content" class="p-5 overflow-y-auto space-y-4 flex-1">
+                <!-- JavaScript orqali to'ldiriladi -->
+            </div>
+
+            <!-- Modal Footer: Yangi otziv qoldirish formasi -->
+            <div class="p-5 bg-slate-50 border-t border-slate-100 space-y-3">
+                <h4 class="text-xs font-bold text-slate-700 uppercase tracking-wider">Shu ustaga sharh va baho qoldirish</h4>
+                <form action="/add-worker-review" method="post" class="space-y-3">
+                    <input type="hidden" id="form-worker-name" name="worker_name" value="">
+                    
+                    <div class="grid grid-cols-2 gap-3">
+                        <input type="text" name="client_name" placeholder="Ismingiz" required class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-indigo-500 outline-none">
+                        <select name="rating" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-indigo-500 outline-none">
+                            <option value="5">⭐⭐⭐⭐⭐ (5/5)</option>
+                            <option value="4">⭐⭐⭐⭐ (4/5)</option>
+                            <option value="3">⭐⭐⭐ (3/5)</option>
+                            <option value="2">⭐⭐ (2/5)</option>
+                            <option value="1">⭐ (1/5)</option>
+                        </select>
+                    </div>
+
+                    <textarea name="comment" placeholder="Ustanining xizmati va sifati haqida fikringiz..." required rows="2" class="w-full bg-white border border-slate-200 rounded-xl p-2.5 text-xs focus:ring-2 focus:ring-indigo-500 outline-none"></textarea>
+
+                    <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 rounded-xl text-xs transition duration-200 shadow-sm">
+                        Sharhni Saqlash
+                    </button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Scriptlar -->
     <script>
         let wizardAnswers = {};
+
+        // Ma'lumotlar bazasidagi barcha otzivlar (Jinja2 orqali uzatiladi)
+        const REVIEWS_DB = {{ reviews_db | tojson }};
 
         // Bo'limlarga mos brendlar
         const CATEGORY_BRANDS = {
@@ -244,7 +213,6 @@
 
             if (!category) return;
 
-            // Bo'limga mos brendlarni to'ldirish
             const brands = CATEGORY_BRANDS[category] || ["Boshqa brend"];
             brands.forEach(b => {
                 const opt = document.createElement('option');
@@ -253,7 +221,6 @@
                 brandSelect.appendChild(opt);
             });
 
-            // Xizmatlarni yuklash
             const res = await fetch(`/get-services?category=${encodeURIComponent(category)}`);
             const services = await res.json();
 
@@ -338,32 +305,82 @@
             if (technicians.length === 0) {
                 container.innerHTML = `
                     <div class="text-center py-6 bg-amber-50 text-amber-700 rounded-xl border border-amber-200 text-sm font-medium">
-                        Ushbu yo'nalish bo'yicha maxsus ustalar ro'yxati shakllantirilmoqda. Fikringizni pastdagi izoh bo'limida qoldirishingiz mumkin.
+                        Ushbu yo'nalish bo'yicha usta topilmadi.
                     </div>`;
                 return;
             }
 
             let html = `<h4 class="text-sm font-bold text-slate-700 mb-3">Mavjud Ustalar (${brand ? brand : 'Barcha brendlar'}):</h4><div class="grid grid-cols-1 md:grid-cols-2 gap-4">`;
             technicians.forEach(tech => {
+                const name = tech[0];
+                const rating = tech[1];
+                const jobs = tech[2];
+                const dist = tech[3];
+
                 html += `
-                    <div class="bg-white border border-slate-200 p-4 rounded-xl shadow-xs hover:shadow-md transition">
-                        <div class="flex justify-between items-start mb-2">
+                    <div class="bg-white border border-slate-200 p-4 rounded-2xl shadow-xs hover:shadow-md transition flex flex-col justify-between space-y-3">
+                        <div class="flex justify-between items-start">
                             <div>
-                                <h5 class="font-bold text-slate-800 text-base">👨‍🔧 ${tech[0]}</h5>
-                                <p class="text-xs text-slate-500 mt-0.5">Bajarilgan ishlar: <span class="font-semibold text-slate-700">${tech[2]} ta</span></p>
+                                <h5 class="font-bold text-slate-800 text-base flex items-center gap-1.5">👨‍🔧 ${name}</h5>
+                                <p class="text-xs text-slate-500 mt-1">Bajarilgan ishlar: <span class="font-semibold text-slate-700">${jobs} ta</span></p>
                             </div>
-                            <span class="bg-emerald-50 text-emerald-700 text-xs px-2 py-1 rounded-md font-medium border border-emerald-200">
-                                📍 ${tech[3]}
+                            <span class="bg-emerald-50 text-emerald-700 text-xs px-2.5 py-1 rounded-lg font-medium border border-emerald-200">
+                                📍 ${dist}
                             </span>
                         </div>
-                        <div class="flex items-center text-amber-500 text-sm font-bold mt-2 pt-2 border-t border-slate-100">
-                            <i class="fa-solid fa-star mr-1"></i> ${tech[1]} / 5.0
+
+                        <div class="flex items-center justify-between pt-2 border-t border-slate-100">
+                            <div class="flex items-center text-amber-500 text-sm font-bold">
+                                <i class="fa-solid fa-star mr-1"></i> ${rating} / 5.0
+                            </div>
+
+                            <button onclick="openModal('${name}', '${rating}', '${jobs}', '${dist}')" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-xs font-semibold px-3 py-1.5 rounded-xl border border-indigo-200/60 transition flex items-center gap-1">
+                                <i class="fa-solid fa-comments"></i> Sharhlar va Ma'lumot
+                            </button>
                         </div>
                     </div>
                 `;
             });
             html += '</div>';
             container.innerHTML = html;
+        }
+
+        // Modalni ochish va usta otzivlarini yuklash
+        function openModal(name, rating, jobs, dist) {
+            document.getElementById('modal-worker-name').textContent = "👨‍🔧 " + name;
+            document.getElementById('modal-worker-stats').textContent = `Bajarilgan ishlar: ${jobs} ta | Masofa: ${dist} | Reyting: ${rating}⭐`;
+            document.getElementById('form-worker-name').value = name;
+
+            const reviewsContainer = document.getElementById('modal-reviews-content');
+            const workerReviews = REVIEWS_DB[name] || [];
+
+            if (workerReviews.length === 0) {
+                reviewsContainer.innerHTML = `
+                    <div class="text-center py-8 bg-slate-50 rounded-xl border border-dashed border-slate-200">
+                        <p class="text-slate-400 text-xs">Ushbu ustaga hali sharh qoldirilmagan. Birinchi bo'lib sharh qoldirishingiz mumkin!</p>
+                    </div>`;
+            } else {
+                let reviewsHtml = '';
+                workerReviews.forEach(r => {
+                    reviewsHtml += `
+                        <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-100 space-y-1">
+                            <div class="flex justify-between items-center">
+                                <span class="font-semibold text-slate-700 text-xs">${r.client}</span>
+                                <span class="text-amber-500 font-bold text-xs"><i class="fa-solid fa-star"></i> ${r.rating}/5</span>
+                            </div>
+                            <p class="text-slate-600 text-xs italic">"${r.comment}"</p>
+                        </div>
+                    `;
+                });
+                reviewsContainer.innerHTML = reviewsHtml;
+            }
+
+            document.getElementById('reviews-modal').classList.remove('hidden');
+        }
+
+        // Modalni yopish
+        function closeModal() {
+            document.getElementById('reviews-modal').classList.add('hidden');
         }
     </script>
 </body>
