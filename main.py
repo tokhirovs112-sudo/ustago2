@@ -43,7 +43,7 @@ async def bot_webhook(request: Request):
     await dp.feed_update(bot, update)
     return {"status": "ok"}
 
-# To'liq ma'lumotlar bazasi (Kategoriyalar va xizmatlar)
+# Kategoriyalar va xizmatlar bazasi
 CATEGORIES_DB = {
     "Maishiy texnika": {
         "icon": "Wrench",
@@ -59,7 +59,7 @@ CATEGORIES_DB = {
     },
     "Konditsioner": {
         "icon": "Wind",
-        "services": ["Fread quyish", "Tozalash", "Montaj qilish", "Ta'mirlash"]
+        "services": ["Freon quyish", "Tozalash", "Montaj qilish", "Ta'mirlash"]
     }
 }
 
@@ -140,13 +140,11 @@ async def home(request: Request):
 @app.get("/api/services")
 async def get_services(category: str = ""):
     if category and category in CATEGORIES_DB:
-        return [{"name": s} for s in CATEGORIES_DB[category]["services"]]
+        return CATEGORIES_DB[category]["services"]
     
-    # Agar kategoriya berilmagan bo'lsa, hamma xizmatlarni qaytaramiz
     all_services = []
     for cat_name, cat_data in CATEGORIES_DB.items():
-        for s in cat_data["services"]:
-            all_services.append({"name": s, "category": cat_name})
+        all_services.extend(cat_data["services"])
     return all_services
 
 @app.get("/api/technicians")
@@ -168,5 +166,5 @@ async def search_services(query: str = ""):
     for cat_name, cat_data in CATEGORIES_DB.items():
         for s in cat_data["services"]:
             if query.lower() in s.lower() or query.lower() in cat_name.lower():
-                matched.append({"name": s, "category": cat_name})
+                matched.append(s)
     return matched
