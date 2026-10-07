@@ -25,6 +25,7 @@ async def on_shutdown():
     await bot.delete_webhook()
     await bot.session.close()
 
+# Telegramdan keladigan xabarlarni qabul qiluvchi endpoint
 @app.post(WEBHOOK_PATH)
 async def bot_webhook(request: Request):
     json_data = await request.json()
@@ -40,7 +41,7 @@ async def home(request: Request):
         "Elektrik": "Zap",
         "Konditsioner": "Wind"
     }
-    # index.html talab qilayotgan districts ro'yxati
+    
     districts_data = [
         "Barchasi (Hudud bo'yicha)",
         "Yunusobod",
@@ -54,13 +55,17 @@ async def home(request: Request):
         "Yashnobod",
         "Sergeli"
     ]
+    
+    reviews_db = []
+    
     return templates.TemplateResponse(
         request, 
         "index.html", 
         {
             "request": request, 
             "categories": categories_data,
-            "districts": districts_data
+            "districts": districts_data,
+            "reviews_db": reviews_db
         }
     )
 
