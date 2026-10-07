@@ -140,11 +140,13 @@ async def home(request: Request):
 @app.get("/api/services")
 async def get_services(category: str = ""):
     if category and category in CATEGORIES_DB:
-        return CATEGORIES_DB[category]["services"]
+        # Frontend JavaScript obyektlar massivini talab qiladi
+        return [{"name": s} for s in CATEGORIES_DB[category]["services"]]
     
     all_services = []
     for cat_name, cat_data in CATEGORIES_DB.items():
-        all_services.extend(cat_data["services"])
+        for s in cat_data["services"]:
+            all_services.append({"name": s, "category": cat_name})
     return all_services
 
 @app.get("/api/technicians")
@@ -166,5 +168,5 @@ async def search_services(query: str = ""):
     for cat_name, cat_data in CATEGORIES_DB.items():
         for s in cat_data["services"]:
             if query.lower() in s.lower() or query.lower() in cat_name.lower():
-                matched.append(s)
+                matched.append({"name": s, "category": cat_name})
     return matched
