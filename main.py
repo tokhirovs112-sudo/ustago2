@@ -43,130 +43,133 @@ async def bot_webhook(request: Request):
     await dp.feed_update(bot, update)
     return {"status": "ok"}
 
-# Kategoriyalar va xizmatlar bazasi
-CATEGORIES_DB = {
-    "Maishiy texnika": {
-        "icon": "Wrench",
-        "services": ["Kir yuvish mashinasi", "Sovutgich", "Televizor", "Mikroto'lqinli pech"]
-    },
-    "Santexnika": {
-        "icon": "Droplet",
-        "services": ["Krani almashtirish", "Unitaz o'rnatish", "Truba tozalash", "Nasos ta'mirlash"]
-    },
-    "Elektrik": {
-        "icon": "Zap",
-        "services": ["Rozetka o'rnatish", "Lyustra osish", "Simlar almashinuvi", "Avtomat qo'yish"]
-    },
-    "Konditsioner": {
-        "icon": "Wind",
-        "services": ["Freon quyish", "Tozalash", "Montaj qilish", "Ta'mirlash"]
-    }
-}
+# O'zbekistonning 12 viloyati, Toshkent shahri va Qoraqalpog'iston
+REGIONS_DB = [
+    "Toshkent shahri",
+    "Toshkent viloyati",
+    "Farg'ona viloyati",
+    "Andijon viloyati",
+    "Namangan viloyati",
+    "Samarqand viloyati",
+    "Buxoro viloyati",
+    "Qashqadaryo viloyati",
+    "Surxondaryo viloyati",
+    "Jizzax viloyati",
+    "Sirdaryo viloyati",
+    "Navoiy viloyati",
+    "Xorazm viloyati",
+    "Qoraqalpog'iston Respublikasi"
+]
+
+# Kasblar va zamonaviy IT / maishiy xizmatlar bazasi
+SERVICES_DB = [
+    {"name": "Wi-Fi router va internet ustasi", "category": "IT & Tarmoqlar", "description": "Wi-Fi routerni sozlash, internet uzilishlarini bartaraf etish, LAN kabel tortish"},
+    {"name": "Kompyuter va noutbuk ustasi", "category": "IT & Kompyuter", "description": "Windows o'rnatish, qotishni to'g'rilash, dasturlar va drayverlar yozish"},
+    {"name": "Videokuzatuv kameralari", "category": "Xavfsizlik", "description": "Kamera va domofonlar o'rnatish, sozlash, telefon orqali ko'rsatish"},
+    {"name": "Smart TV va televizor ustasi", "category": "Elektronika", "description": "Televizorni devorga osish, kanal va internetga ulash"},
+    {"name": "Santexnik", "category": "Santexnika", "description": "Truba, kran, unitaz va isitish tizimlari ustasi"},
+    {"name": "Elektrik", "category": "Elektrik", "description": "Rozetka, lyustra, simlar va elektr xavfsizligi"},
+    {"name": "Telefon ustasi", "category": "Elektronika", "description": "Smartfon va planshetlarni ta'mirlash, ekran almashtirish"},
+    {"name": "Konditsioner ustasi", "category": "Iqlim texnikasi", "description": "Konditsioner o'rnatish, tozalash va freon quyish"},
+    {"name": "Kir yuvish mashinasi ustasi", "category": "Maishiy texnika", "description": "Barcha turdagi kir yuvish mashinalarini ta'mirlash"},
+    {"name": "Mebel ustasi", "category": "Uy jihozlari", "description": "Mebellarni yig'ish, o'rnatish va ta'mirlash"}
+]
 
 TECHNICIANS_DB = [
     {
         "id": 1,
+        "name": "Alisher Saidov",
+        "job": "Wi-Fi router va internet ustasi",
+        "region": "Toshkent shahri",
+        "rating": 5.0,
+        "reviews_count": 45,
+        "phone": "+998 90 999 88 77",
+        "price": "40,000 so'mdan"
+    },
+    {
+        "id": 2,
         "name": "Jasur Rahimov",
-        "category": "Maishiy texnika",
-        "service": "Kir yuvish mashinasi",
-        "district": "Yunusobod",
+        "job": "Kir yuvish mashinasi ustasi",
+        "region": "Toshkent shahri",
         "rating": 4.9,
         "reviews_count": 28,
         "phone": "+998 90 123 45 67",
         "price": "50,000 so'mdan"
     },
     {
-        "id": 2,
+        "id": 3,
         "name": "Sardor Azimov",
-        "category": "Santexnika",
-        "service": "Krani almashtirish",
-        "district": "Chilonzor",
+        "job": "Santexnik",
+        "region": "Farg'ona viloyati",
         "rating": 4.8,
         "reviews_count": 19,
         "phone": "+998 91 987 65 43",
         "price": "40,000 so'mdan"
     },
     {
-        "id": 3,
+        "id": 4,
         "name": "Bekzod Karimov",
-        "category": "Elektrik",
-        "service": "Rozetka o'rnatish",
-        "district": "Mirzo Ulug'bek",
+        "job": "Elektrik",
+        "region": "Toshkent shahri",
         "rating": 5.0,
         "reviews_count": 34,
         "phone": "+998 93 333 22 11",
         "price": "30,000 so'mdan"
     },
     {
-        "id": 4,
+        "id": 5,
         "name": "Anvar Tursunov",
-        "category": "Konditsioner",
-        "service": "Tozalash",
-        "district": "Mirobod",
+        "job": "Konditsioner ustasi",
+        "region": "Samarqand viloyati",
         "rating": 4.7,
         "reviews_count": 15,
         "phone": "+998 99 777 55 44",
         "price": "80,000 so'mdan"
+    },
+    {
+        "id": 6,
+        "name": "Sanjar Turgunov",
+        "job": "Kompyuter va noutbuk ustasi",
+        "region": "Andijon viloyati",
+        "rating": 4.9,
+        "reviews_count": 51,
+        "phone": "+998 94 444 33 22",
+        "price": "50,000 so'mdan"
     }
 ]
 
 @app.get("/")
 async def home(request: Request):
-    districts_data = [
-        "Barchasi (Hudud bo'yicha)",
-        "Yunusobod",
-        "Mirzo Ulug'bek",
-        "Chilonzor",
-        "Mirobod",
-        "Shayxontohur",
-        "Olmazor",
-        "Uchtepa",
-        "Yakkasaroy",
-        "Yashnobod",
-        "Sergeli"
-    ]
-    
     return templates.TemplateResponse(
         request, 
         "index.html", 
         {
             "request": request, 
-            "categories": CATEGORIES_DB,
-            "districts": districts_data,
+            "regions": REGIONS_DB,
+            "services": SERVICES_DB,
             "reviews_db": []
         }
     )
 
 @app.get("/api/services")
-async def get_services(category: str = ""):
-    if category and category in CATEGORIES_DB:
-        # Frontend JavaScript obyektlar massivini talab qiladi
-        return [{"name": s} for s in CATEGORIES_DB[category]["services"]]
-    
-    all_services = []
-    for cat_name, cat_data in CATEGORIES_DB.items():
-        for s in cat_data["services"]:
-            all_services.append({"name": s, "category": cat_name})
-    return all_services
+async def get_services(query: str = ""):
+    if not query:
+        return SERVICES_DB
+    filtered = [s for s in SERVICES_DB if query.lower() in s["name"].lower() or query.lower() in s["description"].lower()]
+    return filtered
 
 @app.get("/api/technicians")
-async def get_technicians(category: str = "", service: str = "", district: str = ""):
+async def get_technicians(job: str = "", region: str = ""):
     result = TECHNICIANS_DB
-    if category:
-        result = [t for t in result if t["category"] == category]
-    if service:
-        result = [t for t in result if t["service"] == service]
-    if district and district != "Barchasi (Hudud bo'yicha)":
-        result = [t for t in result if t["district"] == district]
+    if job:
+        result = [t for t in result if job.lower() in t["job"].lower()]
+    if region and region != "Barcha hududlar":
+        result = [t for t in result if t["region"].lower() == region.lower()]
     return result
 
 @app.get("/api/search")
-async def search_services(query: str = ""):
+async def search_jobs(query: str = ""):
     if not query:
-        return []
-    matched = []
-    for cat_name, cat_data in CATEGORIES_DB.items():
-        for s in cat_data["services"]:
-            if query.lower() in s.lower() or query.lower() in cat_name.lower():
-                matched.append({"name": s, "category": cat_name})
+        return SERVICES_DB
+    matched = [s for s in SERVICES_DB if query.lower() in s["name"].lower()]
     return matched
