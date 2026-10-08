@@ -43,7 +43,7 @@ async def bot_webhook(request: Request):
     await dp.feed_update(bot, update)
     return {"status": "ok"}
 
-# O'zbekistonning hududlari
+# O'zbekiston hududlari
 REGIONS_DB = [
     "Toshkent shahri",
     "Toshkent viloyati",
@@ -61,7 +61,6 @@ REGIONS_DB = [
     "Qoraqalpog'iston Respublikasi"
 ]
 
-# Kategoriyalar va ularning ichidagi ishlar (ustalar faoliyatiga asoslangan)
 CATEGORIES_DB = {
     "Xavfsizlik va tarmoqlar": {
         "icon": "Shield",
@@ -84,7 +83,7 @@ SERVICES_DB = [
     {"name": "Kir yuvish mashinasi ta'miri", "category": "Maishiy texnika", "description": "Kir yuvish mashinalarini sifatli ta'mirlash"}
 ]
 
-# Siz taqdim etgan real ustalar bazasi (Real usta belgisi bilan)
+# Real ustalar va batafsil tavsiflar (OLX uslubidagi e'lonlar uchun)
 TECHNICIANS_DB = [
     {
         "id": 1,
@@ -96,7 +95,8 @@ TECHNICIANS_DB = [
         "reviews_count": 31,
         "phone": "+998 99 642 06 70",
         "price": "Kelishilgan holda",
-        "is_real": True
+        "is_real": True,
+        "description": "Malakali mutaxassis. Xonadonlar, office va obyektlarga zamonaviy videokuzatuv kameralarini sifatli o'rnatish, tarmoqqa ulash va telefon orqali kuzatishni sozlab berish xizmatini ko'rsataman."
     },
     {
         "id": 2,
@@ -108,7 +108,8 @@ TECHNICIANS_DB = [
         "reviews_count": 24,
         "phone": "+998 99 888 08 02",
         "price": "Kelishilgan holda",
-        "is_real": True
+        "is_real": True,
+        "description": "Wi-Fi routerlar va internet tarmoqlari bo'yicha mutaxassis. Routerni to'g'ri o'rnatish, Wi-Fi zonasini kengaytirish, tezlikni optimallashtirish va internet uzilishlarini bartaraf etaman."
     },
     {
         "id": 3,
@@ -120,7 +121,8 @@ TECHNICIANS_DB = [
         "reviews_count": 19,
         "phone": "+998 94 504 09 99",
         "price": "Kelishilgan holda",
-        "is_real": True
+        "is_real": True,
+        "description": "Konditsionerlarni professional darajada o'rnatish (montaj), tozalash, freon quyish va texnik xizmat ko'rsatish ishlarini tez va kafolatli bajaramiz."
     },
     {
         "id": 4,
@@ -132,7 +134,8 @@ TECHNICIANS_DB = [
         "reviews_count": 40,
         "phone": "+998 90 912 31 61",
         "price": "Kelishilgan holda",
-        "is_real": True
+        "is_real": True,
+        "description": "Videokuzatuv va xavfsizlik tizimlarini o'rnatish bo'yicha tajribali usta. Istalgan turdagi kameralarni tez va sifatli o'rnatib beraman."
     },
     {
         "id": 5,
@@ -144,7 +147,8 @@ TECHNICIANS_DB = [
         "reviews_count": 27,
         "phone": "+998 90 353 91 08",
         "price": "Kelishilgan holda",
-        "is_real": True
+        "is_real": True,
+        "description": "Barcha turdagi kir yuvish mashinalarini uyingizga kelib malakali ta'mirlash. Diagnostika va ehtiyot qismlarini almashtirish kafolati bilan."
     }
 ]
 
