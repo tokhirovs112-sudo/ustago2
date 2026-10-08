@@ -43,7 +43,7 @@ async def bot_webhook(request: Request):
     await dp.feed_update(bot, update)
     return {"status": "ok"}
 
-# O'zbekistonning 12 viloyati, Toshkent shahri va Qoraqalpog'iston
+# O'zbekistonning hududlari
 REGIONS_DB = [
     "Toshkent shahri",
     "Toshkent viloyati",
@@ -61,80 +61,90 @@ REGIONS_DB = [
     "Qoraqalpog'iston Respublikasi"
 ]
 
-# Kasblar va zamonaviy IT / maishiy xizmatlar bazasi
+# Kategoriyalar va ularning ichidagi ishlar (ustalar faoliyatiga asoslangan)
+CATEGORIES_DB = {
+    "Xavfsizlik va tarmoqlar": {
+        "icon": "Shield",
+        "services": ["Kamera o'rnatish", "Wi-Fi router sozlash"]
+    },
+    "Iqlim texnikasi": {
+        "icon": "Wind",
+        "services": ["Konditsioner o'rnatish va sozlash"]
+    },
+    "Maishiy texnika": {
+        "icon": "Wrench",
+        "services": ["Kir yuvish mashinasi ta'miri"]
+    }
+}
+
 SERVICES_DB = [
-    {"name": "Wi-Fi router va internet ustasi", "category": "IT & Tarmoqlar", "description": "Wi-Fi routerni sozlash, internet uzilishlarini bartaraf etish, LAN kabel tortish"},
-    {"name": "Kompyuter va noutbuk ustasi", "category": "IT & Kompyuter", "description": "Windows o'rnatish, qotishni to'g'rilash, dasturlar va drayverlar yozish"},
-    {"name": "Videokuzatuv kameralari", "category": "Xavfsizlik", "description": "Kamera va domofonlar o'rnatish, sozlash, telefon orqali ko'rsatish"},
-    {"name": "Smart TV va televizor ustasi", "category": "Elektronika", "description": "Televizorni devorga osish, kanal va internetga ulash"},
-    {"name": "Santexnik", "category": "Santexnika", "description": "Truba, kran, unitaz va isitish tizimlari ustasi"},
-    {"name": "Elektrik", "category": "Elektrik", "description": "Rozetka, lyustra, simlar va elektr xavfsizligi"},
-    {"name": "Telefon ustasi", "category": "Elektronika", "description": "Smartfon va planshetlarni ta'mirlash, ekran almashtirish"},
-    {"name": "Konditsioner ustasi", "category": "Iqlim texnikasi", "description": "Konditsioner o'rnatish, tozalash va freon quyish"},
-    {"name": "Kir yuvish mashinasi ustasi", "category": "Maishiy texnika", "description": "Barcha turdagi kir yuvish mashinalarini ta'mirlash"},
-    {"name": "Mebel ustasi", "category": "Uy jihozlari", "description": "Mebellarni yig'ish, o'rnatish va ta'mirlash"}
+    {"name": "Kamera o'rnatish", "category": "Xavfsizlik va tarmoqlar", "description": "Videokuzatuv kameralarini o'rnatish va sozlash"},
+    {"name": "Wi-Fi router sozlash", "category": "Xavfsizlik va tarmoqlar", "description": "Wi-Fi routerni ulash va internetni sozlash"},
+    {"name": "Konditsioner o'rnatish va sozlash", "category": "Iqlim texnikasi", "description": "Konditsionerlarni montaj qilish va ta'mirlash"},
+    {"name": "Kir yuvish mashinasi ta'miri", "category": "Maishiy texnika", "description": "Kir yuvish mashinalarini sifatli ta'mirlash"}
 ]
 
+# Siz taqdim etgan real ustalar bazasi (Real usta belgisi bilan)
 TECHNICIANS_DB = [
     {
         "id": 1,
-        "name": "Alisher Saidov",
-        "job": "Wi-Fi router va internet ustasi",
+        "name": "Nikita",
+        "job": "Kamera o'rnatish",
+        "category": "Xavfsizlik va tarmoqlar",
         "region": "Toshkent shahri",
         "rating": 5.0,
-        "reviews_count": 45,
-        "phone": "+998 90 999 88 77",
-        "price": "40,000 so'mdan"
+        "reviews_count": 31,
+        "phone": "+998 99 642 06 70",
+        "price": "Kelishilgan holda",
+        "is_real": True
     },
     {
         "id": 2,
-        "name": "Jasur Rahimov",
-        "job": "Kir yuvish mashinasi ustasi",
+        "name": "Doston",
+        "job": "Wi-Fi router sozlash",
+        "category": "Xavfsizlik va tarmoqlar",
         "region": "Toshkent shahri",
         "rating": 4.9,
-        "reviews_count": 28,
-        "phone": "+998 90 123 45 67",
-        "price": "50,000 so'mdan"
+        "reviews_count": 24,
+        "phone": "+998 99 888 08 02",
+        "price": "Kelishilgan holda",
+        "is_real": True
     },
     {
         "id": 3,
-        "name": "Sardor Azimov",
-        "job": "Santexnik",
-        "region": "Farg'ona viloyati",
+        "name": "Nizom",
+        "job": "Konditsioner o'rnatish va sozlash",
+        "category": "Iqlim texnikasi",
+        "region": "Toshkent shahri",
         "rating": 4.8,
         "reviews_count": 19,
-        "phone": "+998 91 987 65 43",
-        "price": "40,000 so'mdan"
+        "phone": "+998 94 504 09 99",
+        "price": "Kelishilgan holda",
+        "is_real": True
     },
     {
         "id": 4,
-        "name": "Bekzod Karimov",
-        "job": "Elektrik",
+        "name": "Dostonbek",
+        "job": "Kamera o'rnatish",
+        "category": "Xavfsizlik va tarmoqlar",
         "region": "Toshkent shahri",
         "rating": 5.0,
-        "reviews_count": 34,
-        "phone": "+998 93 333 22 11",
-        "price": "30,000 so'mdan"
+        "reviews_count": 40,
+        "phone": "+998 90 912 31 61",
+        "price": "Kelishilgan holda",
+        "is_real": True
     },
     {
         "id": 5,
-        "name": "Anvar Tursunov",
-        "job": "Konditsioner ustasi",
-        "region": "Samarqand viloyati",
-        "rating": 4.7,
-        "reviews_count": 15,
-        "phone": "+998 99 777 55 44",
-        "price": "80,000 so'mdan"
-    },
-    {
-        "id": 6,
-        "name": "Sanjar Turgunov",
-        "job": "Kompyuter va noutbuk ustasi",
-        "region": "Andijon viloyati",
+        "name": "Aleksandr",
+        "job": "Kir yuvish mashinasi ta'miri",
+        "category": "Maishiy texnika",
+        "region": "Toshkent shahri",
         "rating": 4.9,
-        "reviews_count": 51,
-        "phone": "+998 94 444 33 22",
-        "price": "50,000 so'mdan"
+        "reviews_count": 27,
+        "phone": "+998 90 353 91 08",
+        "price": "Kelishilgan holda",
+        "is_real": True
     }
 ]
 
@@ -147,24 +157,30 @@ async def home(request: Request):
             "request": request, 
             "regions": REGIONS_DB,
             "services": SERVICES_DB,
+            "categories": CATEGORIES_DB,
+            "districts": REGIONS_DB,
             "reviews_db": []
         }
     )
 
 @app.get("/api/services")
-async def get_services(query: str = ""):
+async def get_services(query: str = "", category: str = ""):
+    if category and category in CATEGORIES_DB:
+        return [{"name": s} for s in CATEGORIES_DB[category]["services"]]
     if not query:
         return SERVICES_DB
     filtered = [s for s in SERVICES_DB if query.lower() in s["name"].lower() or query.lower() in s["description"].lower()]
     return filtered
 
 @app.get("/api/technicians")
-async def get_technicians(job: str = "", region: str = ""):
+async def get_technicians(job: str = "", region: str = "", category: str = ""):
     result = TECHNICIANS_DB
+    if category:
+        result = [t for t in result if t.get("category") == category]
     if job:
         result = [t for t in result if job.lower() in t["job"].lower()]
-    if region and region != "Barcha hududlar":
-        result = [t for t in result if t["region"].lower() == region.lower()]
+    if region and region != "Barcha hududlar" and region != "Barchasi (Hudud bo'yicha)":
+        result = [t for t in result if region.lower() in t["region"].lower()]
     return result
 
 @app.get("/api/search")
