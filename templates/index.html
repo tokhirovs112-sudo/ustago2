@@ -26,7 +26,7 @@
             </a>
 
             <div class="flex items-center space-x-2">
-                <!-- Hudud Tanlash (Tepada) -->
+                <!-- Hudud Tanlash -->
                 <select id="top-region-select" onchange="filterByCategoryAndRegion()" class="bg-indigo-700 text-white text-xs px-3 py-2 rounded-xl font-semibold border border-indigo-500 outline-none">
                     <option value="Barcha hududlar">📍 Barcha hududlar</option>
                     {% for r in regions %}
@@ -70,7 +70,7 @@
             </div>
         </div>
 
-        <!-- 🏷️ Categories Bar (Tepada kategoriyalar) -->
+        <!-- 🏷️ Categories Bar -->
         <div class="space-y-2">
             <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider">Kategoriyalar bo'yicha tanlash:</h3>
             <div class="flex items-center gap-2 overflow-x-auto pb-2 no-scrollbar">
@@ -93,10 +93,54 @@
             </div>
 
             <div id="technicians-list" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <!-- Dinamik ravishda JavaScript orqali to'ldiriladi -->
+                <!-- Dinamik to'ldiriladi -->
             </div>
         </section>
     </main>
+
+    <!-- MODAL: Usta bilan chat / Buyurtma yuborish -->
+    <div id="chat-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-100 space-y-4">
+            <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center font-bold text-sm">
+                        <i class="fa-solid fa-comments"></i>
+                    </div>
+                    <div>
+                        <h3 id="chat-worker-name" class="font-bold text-slate-800 text-sm">Usta bilan chat</h3>
+                        <p class="text-[10px] text-slate-400">Buyurtma tafsilotlarini yuboring</p>
+                    </div>
+                </div>
+                <button onclick="closeChatModal()" class="text-slate-400 hover:text-slate-600">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            
+            <div class="space-y-3">
+                <div>
+                    <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Ismingiz</label>
+                    <input type="text" id="client-name-input" placeholder="Azizbek" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-indigo-500 outline-none">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Telefon raqamingiz</label>
+                    <input type="tel" id="client-phone-input" placeholder="+998 90 123 45 67" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-indigo-500 outline-none">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Muammo yoki xabar matni</label>
+                    <textarea id="client-message-input" rows="3" placeholder="Muammoni qisqacha yozing (Masalan: Router ishlamay qoldi)..." class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-xs focus:ring-2 focus:ring-indigo-500 outline-none"></textarea>
+                </div>
+                <button onclick="sendOrderToMaster()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 rounded-xl text-xs transition shadow-md flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Xabarni yuborish
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-5 right-5 bg-slate-900 text-white text-xs px-4 py-2.5 rounded-xl shadow-xl transition-all duration-300 transform translate-y-20 opacity-0 z-50 flex items-center gap-2">
+        <i class="fa-solid fa-circle-check text-emerald-400"></i>
+        <span id="toast-text">Xabar yuborildi!</span>
+    </div>
 
     <!-- Footer -->
     <footer class="bg-white border-t border-slate-200 py-4 text-center text-xs text-slate-400">
@@ -107,8 +151,9 @@
     <script>
         let allTechnicians = [];
         let selectedCategory = "";
+        let currentActiveWorkerPhone = "";
+        let currentActiveWorkerName = "";
 
-        // Sahifa ochilganda barcha ustalarni yuklab olish
         async function loadInitialData() {
             const res = await fetch('/api/technicians');
             allTechnicians = await res.json();
@@ -117,8 +162,6 @@
 
         async function filterByCategory(category) {
             selectedCategory = category;
-            
-            // Tugmalar aktivligini o'zgartirish
             document.querySelectorAll('.cat-btn').forEach(btn => {
                 if (btn.getAttribute('data-cat') === category) {
                     btn.classList.remove('bg-white', 'text-slate-700', 'border');
@@ -144,7 +187,6 @@
             renderWorkers(data);
         }
 
-        // Live Search
         function handleLiveSearch() {
             const query = document.getElementById('live-search-input').value.toLowerCase();
             const clearBtn = document.getElementById('search-clear-btn');
@@ -169,7 +211,51 @@
             renderWorkers(allTechnicians);
         }
 
-        // Ustalar ro'yxatini OLX uslubida chiqarish
+        function copyPhoneNumber(phone) {
+            navigator.clipboard.writeText(phone).then(() => {
+                showToast(`${phone} nusxalandi!`);
+            });
+        }
+
+        function openChatModal(name, phone) {
+            currentActiveWorkerName = name;
+            currentActiveWorkerPhone = phone;
+            document.getElementById('chat-worker-name').innerText = `${name} bilan chat`;
+            document.getElementById('chat-modal').classList.remove('hidden');
+        }
+
+        function closeChatModal() {
+            document.getElementById('chat-modal').classList.add('hidden');
+        }
+
+        function sendOrderToMaster() {
+            const name = document.getElementById('client-name-input').value.trim();
+            const phone = document.getElementById('client-phone-input').value.trim();
+            const msg = document.getElementById('client-message-input').value.trim();
+
+            if (!name || !phone) {
+                alert("Iltimos, ismingiz va telefon raqamingizni kiriting!");
+                return;
+            }
+
+            closeChatModal();
+            showToast(`Buyurtmangiz ${currentActiveWorkerName}ga yuborildi! Tez orada bog'lanishadi.`);
+            
+            // Tozalash
+            document.getElementById('client-name-input').value = '';
+            document.getElementById('client-phone-input').value = '';
+            document.getElementById('client-message-input').value = '';
+        }
+
+        function showToast(text) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-text').innerText = text;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+
         function renderWorkers(workers) {
             const container = document.getElementById('technicians-list');
             document.getElementById('results-count').innerText = `Topildi: ${workers.length} ta usta`;
@@ -181,10 +267,6 @@
 
             let html = '';
             workers.forEach(w => {
-                const tgPhone = w.phone.replace(/[^0-9]/g, '');
-                const tgMessage = encodeURIComponent(`Salom, ${w.name}! Siz bilan UstaGo platformasi orqali bog'lanyapman. Xizmat: ${w.job}.`);
-                const tgUrl = `https://t.me/+${tgPhone}`; // Yoki t.me havolasi
-
                 html += `
                     <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between space-y-4 hover:shadow-md transition">
                         <div class="space-y-2">
@@ -199,7 +281,6 @@
                                 <span class="text-xs font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-xl">${w.price}</span>
                             </div>
 
-                            <!-- OLX uslubidagi Tavsif (Opisanie) -->
                             <p class="text-xs text-slate-600 leading-relaxed bg-slate-50 p-3 rounded-xl border border-slate-100">
                                 ${w.description}
                             </p>
@@ -213,14 +294,17 @@
                             </div>
                         </div>
 
-                        <!-- Aloqa tugmalari -->
-                        <div class="grid grid-cols-2 gap-2 pt-2 border-t border-slate-100">
-                            <a href="tel:${w.phone}" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2 rounded-xl text-xs transition flex items-center justify-center gap-1.5 shadow-sm">
-                                <i class="fa-solid fa-phone"></i> ${w.phone}
+                        <!-- Tugmalar: Qo'ng'iroq, Nusxalash va Chat -->
+                        <div class="grid grid-cols-3 gap-2 pt-2 border-t border-slate-100">
+                            <a href="tel:${w.phone}" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2 rounded-xl text-xs transition flex items-center justify-center gap-1 shadow-sm">
+                                <i class="fa-solid fa-phone"></i> Qo'ng'iroq
                             </a>
-                            <a href="https://t.me/{{ telegram_bot_username }}" target="_blank" class="bg-sky-500 hover:bg-sky-600 text-white font-semibold py-2 rounded-xl text-xs transition flex items-center justify-center gap-1.5 shadow-sm">
-                                <i class="fa-brands fa-telegram"></i> Telegramda yozish
-                            </a>
+                            <button onclick="copyPhoneNumber('${w.phone}')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold py-2 rounded-xl text-xs transition flex items-center justify-center gap-1 shadow-sm">
+                                <i class="fa-regular fa-copy"></i> Nusxalash
+                            </button>
+                            <button onclick="openChatModal('${w.name}', '${w.phone}')" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 rounded-xl text-xs transition flex items-center justify-center gap-1 shadow-sm">
+                                <i class="fa-solid fa-comments"></i> Chat
+                            </button>
                         </div>
                     </div>
                 `;
@@ -228,7 +312,6 @@
             container.innerHTML = html;
         }
 
-        // Ishga tushirish
         loadInitialData();
     </script>
 </body>
