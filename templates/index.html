@@ -151,8 +151,6 @@
     <script>
         let allTechnicians = [];
         let selectedCategory = "";
-        let currentActiveWorkerPhone = "";
-        let currentActiveWorkerName = "";
 
         async function loadInitialData() {
             const res = await fetch('/api/technicians');
@@ -218,8 +216,6 @@
         }
 
         function openChatModal(name, phone) {
-            currentActiveWorkerName = name;
-            currentActiveWorkerPhone = phone;
             document.getElementById('chat-worker-name').innerText = `${name} bilan chat`;
             document.getElementById('chat-modal').classList.remove('hidden');
         }
@@ -239,9 +235,8 @@
             }
 
             closeChatModal();
-            showToast(`Buyurtmangiz ${currentActiveWorkerName}ga yuborildi! Tez orada bog'lanishadi.`);
+            showToast("Buyurtmangiz muvaffaqiyatli yuborildi!");
             
-            // Tozalash
             document.getElementById('client-name-input').value = '';
             document.getElementById('client-phone-input').value = '';
             document.getElementById('client-message-input').value = '';
@@ -294,11 +289,11 @@
                             </div>
                         </div>
 
-                        <!-- Tugmalar: Qo'ng'iroq, Nusxalash va Chat -->
+                        <!-- Tugmalar: Telefon raqam (bosilganda nusxalanadi), Nusxalash tugmasi va Chat -->
                         <div class="grid grid-cols-3 gap-2 pt-2 border-t border-slate-100">
-                            <a href="tel:${w.phone}" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2 rounded-xl text-xs transition flex items-center justify-center gap-1 shadow-sm">
-                                <i class="fa-solid fa-phone"></i> Qo'ng'iroq
-                            </a>
+                            <button onclick="copyPhoneNumber('${w.phone}')" class="bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-bold py-2 rounded-xl text-xs transition flex items-center justify-center gap-1 shadow-sm border border-emerald-200" title="Bosib nusxalar oling">
+                                <i class="fa-solid fa-phone"></i> ${w.phone}
+                            </button>
                             <button onclick="copyPhoneNumber('${w.phone}')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold py-2 rounded-xl text-xs transition flex items-center justify-center gap-1 shadow-sm">
                                 <i class="fa-regular fa-copy"></i> Nusxalash
                             </button>
