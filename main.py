@@ -42,115 +42,83 @@ async def bot_webhook(request: Request):
     return {"status": "ok"}
 
 REGIONS_DB = [
-    "Toshkent shahri",
-    "Toshkent viloyati",
-    "Farg'ona viloyati",
-    "Andijon viloyati",
-    "Namangan viloyati",
-    "Samarqand viloyati",
-    "Buxoro viloyati",
-    "Qashqadaryo viloyati",
-    "Surxondaryo viloyati",
-    "Jizzax viloyati",
-    "Sirdaryo viloyati",
-    "Navoiy viloyati",
-    "Xorazm viloyati",
-    "Qoraqalpog'iston Respublikasi"
+    "Toshkent shahri", "Toshkent viloyati", "Farg'ona viloyati", "Andijon viloyati", 
+    "Namangan viloyati", "Samarqand viloyati", "Buxoro viloyati", "Qashqadaryo viloyati", 
+    "Surxondaryo viloyati", "Jizzax viloyati", "Sirdaryo viloyati", "Navoiy viloyati", 
+    "Xorazm viloyati", "Qoraqalpog'iston Respublikasi"
 ]
 
 CATEGORIES_DB = {
-    "Telefon va Gadjetlar": {
-        "services": ["Telefon ekranini almashtirish", "Akkumulyator almashtirish", "Smartfon ta'miri"]
-    },
-    "Xavfsizlik va tarmoqlar": {
-        "services": ["Kamera o'rnatish", "Wi-Fi router sozlash"]
-    },
-    "Iqlim texnikasi": {
-        "services": ["Konditsioner o'rnatish va sozlash"]
-    },
-    "Maishiy texnika": {
-        "services": ["Kir yuvish mashinasi ta'miri"]
-    }
+    "Telefon va Gadjetlar": {"services": ["Telefon ekranini almashtirish", "Akkumulyator almashtirish", "Smartfon ta'miri"]},
+    "Xavfsizlik va tarmoqlar": {"services": ["Kamera o'rnatish", "Wi-Fi router sozlash"]},
+    "Iqlim texnikasi": {"services": ["Konditsioner o'rnatish va sozlash"]},
+    "Maishiy texnika": {"services": ["Kir yuvish mashinasi ta'miri"]}
 }
 
 TECHNICIANS_DB = [
     {
+        "id": 1, "name": "Nikita", "job": "Kamera o'rnatish", "category": "Xavfsizlik va tarmoqlar", 
+        "region": "Toshkent shahri", "rating": 5.0, "reviews_count": 31, "phone": "+998996420670", 
+        "price": "Kelishilgan holda", "is_real": True, 
+        "description": "Malakali mutaxassis. Xonadonlar, office va obyektlarga zamonaviy videokuzatuv kameralarini sifatli o'rnatish."
+    },
+    {
+        "id": 2, "name": "Doston", "job": "Wi-Fi router sozlash", "category": "Xavfsizlik va tarmoqlar", 
+        "region": "Toshkent shahri", "rating": 4.9, "reviews_count": 24, "phone": "+998998880802", 
+        "price": "Kelishilgan holda", "is_real": True, 
+        "description": "Wi-Fi routerlar va internet tarmoqlari bo'yicha mutaxassis. Routerni to'g'ri o'rnatish va kengaytirish."
+    },
+    {
+        "id": 3, "name": "Nizom", "job": "Konditsioner o'rnatish va sozlash", "category": "Iqlim texnikasi", 
+        "region": "Toshkent shahri", "rating": 4.8, "reviews_count": 19, "phone": "+998945040999", 
+        "price": "Kelishilgan holda", "is_real": True, 
+        "description": "Konditsionerlarni professional darajada o'rnatish (montaj), tozalash, freon quyish."
+    },
+    {
+        "id": 4, "name": "Dostonbek", "job": "Kamera o'rnatish", "category": "Xavfsizlik va tarmoqlar", 
+        "region": "Toshkent shahri", "rating": 5.0, "reviews_count": 40, "phone": "+998909123161", 
+        "price": "Kelishilgan holda", "is_real": True, 
+        "description": "Videokuzatuv va xavfsizlik tizimlarini o'rnatish bo'yicha tajribali usta."
+    },
+    {
+        "id": 5, "name": "Aleksandr", "job": "Kir yuvish mashinasi ta'miri", "category": "Maishiy texnika", 
+        "region": "Toshkent shahri", "rating": 4.9, "reviews_count": 27, "phone": "+998903539108", 
+        "price": "Kelishilgan holda", "is_real": True, 
+        "description": "Barcha turdagi kir yuvish mashinalarini uyingizga kelib malakali ta'mirlash."
+    },
+    {
+        "id": 6, "name": "Ismoilov Baxodir (OYNACHI)", "job": "Telefon ekran va akkumulyator almashtirish", 
+        "category": "Telefon va Gadjetlar", "region": "Toshkent shahri", "rating": 5.0, "reviews_count": 64, 
+        "phone": "+998991405555", "price": "Kelishilgan holda", "is_real": True, 
+        "description": "OYNACHI servis markazi. 180 kun kafolat. iPhone va Samsung akkumulyator almashtirganda foiz 100% ko'rsatiladi."
+    }
+]
+
+# Kengaytirilgan Blog Maqolalari Bazasi
+ARTICLES_DB = [
+    {
         "id": 1,
-        "name": "Nikita",
-        "job": "Kamera o'rnatish",
-        "category": "Xavfsizlik va tarmoqlar",
-        "region": "Toshkent shahri",
-        "rating": 5.0,
-        "reviews_count": 31,
-        "phone": "+998996420670",
-        "price": "Kelishilgan holda",
-        "is_real": True,
-        "description": "Malakali mutaxassis. Xonadonlar, office va obyektlarga zamonaviy videokuzatuv kameralarini sifatli o'rnatish, tarmoqqa ulash va telefon orqali kuzatishni sozlab berish xizmatini ko'rsataman."
+        "title": "Smartfon akkumulyatorini to'g'ri quvvatlash va uning muddatini uzaytirish sirlari",
+        "category": "Gadjetlar",
+        "date": "2026-10-08",
+        "read_time": "5 daqiqa",
+        "content": "Bugungi kunda smartfonlar hayotimizning ajralmas qismiga aylandi. Ularning eng nozik joylaridan biri bu — akkumulyator (batareya). Batareya quvvati tez tugashi ko'pchilikning muammosi. Uni to'g'ri quvvatlash uchun quyidagi qoidalarga amal qilish lozim: Telefoningizni doimiy ravishda 0% gacha o'chirib qo'ymang, optimal quvvat oralig'i 20% dan 80% gacha hisoblanadi. Tunda zaryadga qo'yib uxlash batareya resursini qisqartiradi. Shuningdek, faqat original adapter va kabellardan foydalanish telefoningizni ortiqcha qizishdan saqlaydi."
     },
     {
         "id": 2,
-        "name": "Doston",
-        "job": "Wi-Fi router sozlash",
-        "category": "Xavfsizlik va tarmoqlar",
-        "region": "Toshkent shahri",
-        "rating": 4.9,
-        "reviews_count": 24,
-        "phone": "+998998880802",
-        "price": "Kelishilgan holda",
-        "is_real": True,
-        "description": "Wi-Fi routerlar va internet tarmoqlari bo'yicha mutaxassis. Routerni to'g'ri o'rnatish, Wi-Fi zonasini kengaytirish va internet uzilishlarini bartaraf etaman."
+        "title": "Konditsionerga o'z vaqtida texnik xizmat ko'rsatish nima uchun muhim?",
+        "category": "Iqlim texnikasi",
+        "date": "2026-10-05",
+        "read_time": "4 daqiqa",
+        "content": "Konditsionerlar yozda salqinlik, qishda iliqlik baxsh etadi. Ammo ularga o'z vaqtida texnik xizmat ko'rsatilmasa, ichki filtrlar chang bilan to'lib, havo aylanishi buziladi va freon (sovutish gazi) kamayib ketadi. Natijada kompressor ortiqcha yuklama bilan ishlab, ishdan chiqishi mumkin. Har mavsum boshlanishidan oldin ichki filtrlarni tozalash va malakali ustaga freon bosimini tekshirtirish tavsiya etiladi."
     },
     {
         "id": 3,
-        "name": "Nizom",
-        "job": "Konditsioner o'rnatish va sozlash",
-        "category": "Iqlim texnikasi",
-        "region": "Toshkent shahri",
-        "rating": 4.8,
-        "reviews_count": 19,
-        "phone": "+998945040999",
-        "price": "Kelishilgan holda",
-        "is_real": True,
-        "description": "Konditsionerlarni professional darajada o'rnatish (montaj), tozalash, freon quyish va texnik xizmat ko'rsatish ishlarini tez va kafolatli bajaramiz."
-    },
-    {
-        "id": 4,
-        "name": "Dostonbek",
-        "job": "Kamera o'rnatish",
-        "category": "Xavfsizlik va tarmoqlar",
-        "region": "Toshkent shahri",
-        "rating": 5.0,
-        "reviews_count": 40,
-        "phone": "+998909123161",
-        "price": "Kelishilgan holda",
-        "is_real": True,
-        "description": "Videokuzatuv va xavfsizlik tizimlarini o'rnatish bo'yicha tajribali usta. Istalgan turdagi kameralarni tez va sifatli o'rnatib beraman."
-    },
-    {
-        "id": 5,
-        "name": "Aleksandr",
-        "job": "Kir yuvish mashinasi ta'miri",
-        "category": "Maishiy texnika",
-        "region": "Toshkent shahri",
-        "rating": 4.9,
-        "reviews_count": 27,
-        "phone": "+998903539108",
-        "price": "Kelishilgan holda",
-        "is_real": True,
-        "description": "Barcha turdagi kir yuvish mashinalarini uyingizga kelib malakali ta'mirlash. Diagnostika va ehtiyot qismlarini almashtirish kafolati bilan."
-    },
-    {
-        "id": 6,
-        "name": "Ismoilov Baxodir (OYNACHI)",
-        "job": "Telefon ekran va akkumulyator almashtirish",
-        "category": "Telefon va Gadjetlar",
-        "region": "Toshkent shahri",
-        "rating": 5.0,
-        "reviews_count": 64,
-        "phone": "+998991405555",
-        "price": "Kelishilgan holda",
-        "is_real": True,
-        "description": "OYNACHI servis markazi. Barcha qismlarga 180 kun kafolat beramiz. iPhone, Samsung, Huawei, Xiaomi va boshqa modellar uchun akkumulyator almashtirganda batareya foizi 100% bo'lib ko'rsatiladi. Ish vaqti: 10:00 dan 20:00 gacha."
+        "title": "Uyda Wi-Fi internet tezligini oshirish va routerni to'g'ri joylashtirish",
+        "category": "Tarmoqlar",
+        "date": "2026-09-28",
+        "read_time": "6 daqiqa",
+        "content": "Internet tezligi pastligidan shikoyat qilyapsizmi? Ko'pincha buning sababi routerning uyning chekka xonasida yoki temir-beton devorlar ortida turganidadir. Routerni uyning markaziy qismiga, balandroq joyga o'rnatish signallarning bir tekis tarqalishini ta'minlaydi. Shuningdek, mikroto'lqinli pechlar va ko'zgu oynalar Wi-Fi signalini to'sishi mumkinligini unutmang."
     }
 ]
 
@@ -164,7 +132,12 @@ async def about_page(request: Request):
 
 @app.get("/blog")
 async def blog_page(request: Request):
-    return templates.TemplateResponse(request, "blog.html", {"request": request})
+    return templates.TemplateResponse(request, "blog.html", {"request": request, "articles": ARTICLES_DB})
+
+@app.get("/blog/{article_id}")
+async def article_detail(request: Request, article_id: int):
+    article = next((a for a in ARTICLES_DB if a["id"] == article_id), None)
+    return templates.TemplateResponse(request, "article.html", {"request": request, "article": article})
 
 @app.get("/api/technicians")
 async def get_technicians(job: str = "", region: str = "", category: str = ""):
