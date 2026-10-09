@@ -51,7 +51,7 @@ REGIONS_DB = [
 CATEGORIES_DB = {
     "Telefon va Gadjetlar": {"services": ["Telefon ekranini almashtirish", "Akkumulyator almashtirish", "Smartfon ta'miri"]},
     "Xavfsizlik va tarmoqlar": {"services": ["Kamera o'rnatish", "Wi-Fi router sozlash"]},
-    "Iqlim texnikasi": {"services": ["Konditsioner o'rnatish va sozlash"]},
+    "Konditsionerlar": {"services": ["Konditsioner o'rnatish va sozlash"]},
     "Maishiy texnika": {"services": ["Kir yuvish mashinasi ta'miri"]}
 }
 
@@ -69,7 +69,7 @@ TECHNICIANS_DB = [
         "description": "Wi-Fi routerlar va internet tarmoqlari bo'yicha mutaxassis. Routerni to'g'ri o'rnatish va kengaytirish."
     },
     {
-        "id": 3, "name": "Nizom", "job": "Konditsioner o'rnatish va sozlash", "category": "Iqlim texnikasi", 
+        "id": 3, "name": "Nizom", "job": "Konditsioner o'rnatish va sozlash", "category": "Konditsionerlar", 
         "region": "Toshkent shahri", "rating": 4.8, "reviews_count": 19, "phone": "+998945040999", 
         "price": "Kelishilgan holda", "is_real": True, 
         "description": "Konditsionerlarni professional darajada o'rnatish (montaj), tozalash, freon quyish."
@@ -94,7 +94,6 @@ TECHNICIANS_DB = [
     }
 ]
 
-# Quick Tips (Tezkor maslahatlar) Bazasi
 QUICK_TIPS_DB = [
     {
         "id": 1,
@@ -106,7 +105,7 @@ QUICK_TIPS_DB = [
     {
         "id": 2,
         "title": "Konditsioner yomon sovutyaptimi?",
-        "category": "Iqlim",
+        "category": "Konditsionerlar",
         "icon": "fa-snowflake",
         "tip": "Ko'pincha sabab oddiy: ichki blok havo filtrlarida chang to'lib qolgan bo'ladi. Ularni har oyda bir marta iliq suvda yuvib quritib taqib qo'ying."
     },
@@ -115,14 +114,14 @@ QUICK_TIPS_DB = [
         "title": "Wi-Fi internet sekin ishlayotgan bo'lsa",
         "category": "Tarmoqlar",
         "icon": "fa-wifi",
-        "tip": "Routerni har hafta 10 soniyaga tokdan o'chirib yoqing (pereczerka). Bu uning xotirasini tozalab, tezligini tiklaydi."
+        "tip": "Routerni har hafta 10 soniyaga tokdan o'chirib yoqing. Bu uning xotirasini tozalab, tezligini tiklaydi."
     },
     {
         "id": 4,
         "title": "Kir yuvish mashinasidan yoqimsiz hid kelsa",
         "category": "Maishiy texnika",
         "icon": "fa-shirt",
-        "tip": "Har oyda bir marta mashinani kirsiz, 90 gradus haroratda ichiga ozgina limon kislotasi (limonnaya kislota) solib bo'sh yuvdirib yuboring."
+        "tip": "Har oyda bir marta mashinani kirsiz, 90 gradus haroratda ichiga ozgina limon kislotasi solib bo'sh yuvdirib yuboring."
     },
     {
         "id": 5,
@@ -154,7 +153,6 @@ async def blog_page(request: Request):
 
 @app.get("/blog/{article_id}")
 async def article_detail(request: Request, article_id: int):
-    # Agar eski article_id bo'yicha kirishsa, Quick Tip ma'lumotini ochib beramiz
     article = next((a for a in QUICK_TIPS_DB if a["id"] == article_id), QUICK_TIPS_DB[0])
     return templates.TemplateResponse(request, "article.html", {"request": request, "article": article})
 
