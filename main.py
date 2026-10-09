@@ -73,7 +73,6 @@ CATEGORIES_DB = {
     }
 }
 
-# Barcha ustalar bazasi (Yangi "OYNACHI" servisi ham qo'shildi)
 TECHNICIANS_DB = [
     {
         "id": 1,
@@ -151,13 +150,21 @@ TECHNICIANS_DB = [
         "phone": "+998991405555",
         "price": "Kelishilgan holda",
         "is_real": True,
-        "description": "OYNACHI servis markazi. iPhone, Samsung, Huawei, Xiaomi va boshqa barcha turdagi smartfonlarga ekran, shisha va akkumulyator almashtirish (180 kun kafolat). Batareya foizi 100% ko'rsatiladi. Ish vaqti: 10:00 dan 20:00 gacha, dam olish kunisiz."
+        "description": "OYNACHI servis markazi. Barcha qismlarga 180 kun kafolat beramiz. iPhone, Samsung, Huawei, Xiaomi va boshqa modellar uchun akkumulyator almashtirganda batareya foizi 100% bo'lib ko'rsatiladi. Ish vaqti: 10:00 dan 20:00 gacha."
     }
 ]
 
 @app.get("/")
 async def home(request: Request):
     return templates.TemplateResponse(request, "index.html", {"request": request, "regions": REGIONS_DB, "categories": CATEGORIES_DB})
+
+@app.get("/about")
+async def about_page(request: Request):
+    return templates.TemplateResponse(request, "about.html", {"request": request})
+
+@app.get("/blog")
+async def blog_page(request: Request):
+    return templates.TemplateResponse(request, "blog.html", {"request": request})
 
 @app.get("/api/technicians")
 async def get_technicians(job: str = "", region: str = "", category: str = ""):
