@@ -50,92 +50,40 @@ REGIONS_DB = [
 
 CATEGORIES_DB = {
     "Telefon va Gadjetlar": {"services": ["Telefon ekranini almashtirish", "Akkumulyator almashtirish", "Smartfon ta'miri"]},
-    "Xavfsizlik va tarmoqlar": {"services": ["Kamera o'rnatish", "Wi-Fi router sozlash"]},
-    "Konditsionerlar": {"services": ["Konditsioner o'rnatish va sozlash"]},
-    "Maishiy texnika": {"services": ["Kir yuvish mashinasi ta'miri"]}
+    "Konditsionerlar": {"services": ["Konditsioner o'rnatish va ta'mirlash"]},
+    "Maishiy texnika": {"services": ["Kir yuvish mashinasi va muzlatgich ta'miri"]}
 }
 
+# Faqat OYNACHI va siz bergan yangi 2 ta usta qoldirildi, sharhlar 0 qilindi
 TECHNICIANS_DB = [
     {
-        "id": 1, "name": "Nikita", "job": "Kamera o'rnatish", "category": "Xavfsizlik va tarmoqlar", 
-        "region": "Toshkent shahri", "rating": 5.0, "reviews_count": 31, "phone": "+998996420670", 
-        "price": "Kelishilgan holda", "is_real": True, 
-        "description": "Malakali mutaxassis. Xonadonlar, office va obyektlarga zamonaviy videokuzatuv kameralarini sifatli o'rnatish."
-    },
-    {
-        "id": 2, "name": "Doston", "job": "Wi-Fi router sozlash", "category": "Xavfsizlik va tarmoqlar", 
-        "region": "Toshkent shahri", "rating": 4.9, "reviews_count": 24, "phone": "+998998880802", 
-        "price": "Kelishilgan holda", "is_real": True, 
-        "description": "Wi-Fi routerlar va internet tarmoqlari bo'yicha mutaxassis. Routerni to'g'ri o'rnatish va kengaytirish."
-    },
-    {
-        "id": 3, "name": "Nizom", "job": "Konditsioner o'rnatish va sozlash", "category": "Konditsionerlar", 
-        "region": "Toshkent shahri", "rating": 4.8, "reviews_count": 19, "phone": "+998945040999", 
-        "price": "Kelishilgan holda", "is_real": True, 
-        "description": "Konditsionerlarni professional darajada o'rnatish (montaj), tozalash, freon quyish."
-    },
-    {
-        "id": 4, "name": "Dostonbek", "job": "Kamera o'rnatish", "category": "Xavfsizlik va tarmoqlar", 
-        "region": "Toshkent shahri", "rating": 5.0, "reviews_count": 40, "phone": "+998909123161", 
-        "price": "Kelishilgan holda", "is_real": True, 
-        "description": "Videokuzatuv va xavfsizlik tizimlarini o'rnatish bo'yicha tajribali usta."
-    },
-    {
-        "id": 5, "name": "Aleksandr", "job": "Kir yuvish mashinasi ta'miri", "category": "Maishiy texnika", 
-        "region": "Toshkent shahri", "rating": 4.9, "reviews_count": 27, "phone": "+998903539108", 
-        "price": "Kelishilgan holda", "is_real": True, 
-        "description": "Barcha turdagi kir yuvish mashinalarini uyingizga kelib malakali ta'mirlash."
-    },
-    {
-        "id": 6, "name": "Ismoilov Baxodir (OYNACHI)", "job": "Telefon ekran va akkumulyator almashtirish", 
-        "category": "Telefon va Gadjetlar", "region": "Toshkent shahri", "rating": 5.0, "reviews_count": 64, 
+        "id": 1, "name": "Ismoilov Baxodir (OYNACHI)", "job": "Telefon ekran va akkumulyator almashtirish", 
+        "category": "Telefon va Gadjetlar", "region": "Toshkent shahri", "rating": 5.0, "reviews_count": 0, 
         "phone": "+998991405555", "price": "Kelishilgan holda", "is_real": True, 
-        "description": "OYNACHI servis markazi. 180 kun kafolat. iPhone va Samsung akkumulyator almashtirganda foiz 100% ko'rsatiladi."
+        "description": "OYNACHI servis markazi. 180 kun kafolat. iPhone, Samsung, Huawei, Xiaomi va boshqa modellar uchun ekran, shisha va akkumulyator almashtirish. Batareya foizi 100% ko'rsatiladi."
+    },
+    {
+        "id": 2, "name": "Zafar", "job": "Konditsioner va muzlatgich ta'miri", "category": "Konditsionerlar", 
+        "region": "Toshkent shahri", "rating": 5.0, "reviews_count": 0, 
+        "phone": "+998935717774", "price": "Kelishilgan holda", "is_real": True, 
+        "description": "Ustanofka, remont, demontaj, zapravka freon, kompressor almashtirish va profilaktika. Muzlatgich va marazilka ta'mirlash."
+    },
+    {
+        "id": 3, "name": "Khalmuratov Dilmurod", "job": "Maishiy texnika va konditsioner ta'miri", "category": "Maishiy texnika", 
+        "region": "Toshkent shahri", "rating": 5.0, "reviews_count": 0, 
+        "phone": "+998957073773", "price": "Kelishilgan holda", "is_real": True, 
+        "description": "Konditsionerlar, muzlatgichlar, kir yuvish mashinalari va boshqa maishiy texnikalarni professional diagnostika va kafolatli ta'mirlash."
     }
 ]
 
 QUICK_TIPS_DB = [
     {
-        "id": 1,
-        "title": "Telefoningiz tez qizib ketyaptimi?",
-        "category": "Gadjetlar",
-        "icon": "fa-mobile-screen-button",
-        "tip": "Og'ir o'yinlar yoki ilovalardan so'ng telefoningiz qizisa, uni g'ilofidan (chexolidan) chiqarib turing va quyosh nuri tushmaydigan salqin joyga qo'ying."
+        "id": 1, "title": "Telefoningiz tez qizib ketyaptimi?", "category": "Gadjetlar", "icon": "fa-mobile-screen-button",
+        "tip": "Og'ir o'yinlar yoki ilovalardan so'ng telefoningiz qizisa, uni g'ilofidan chiqarib turing va salqin joyga qo'ying."
     },
     {
-        "id": 2,
-        "title": "Konditsioner yomon sovutyaptimi?",
-        "category": "Konditsionerlar",
-        "icon": "fa-snowflake",
-        "tip": "Ko'pincha sabab oddiy: ichki blok havo filtrlarida chang to'lib qolgan bo'ladi. Ularni har oyda bir marta iliq suvda yuvib quritib taqib qo'ying."
-    },
-    {
-        "id": 3,
-        "title": "Wi-Fi internet sekin ishlayotgan bo'lsa",
-        "category": "Tarmoqlar",
-        "icon": "fa-wifi",
-        "tip": "Routerni har hafta 10 soniyaga tokdan o'chirib yoqing. Bu uning xotirasini tozalab, tezligini tiklaydi."
-    },
-    {
-        "id": 4,
-        "title": "Kir yuvish mashinasidan yoqimsiz hid kelsa",
-        "category": "Maishiy texnika",
-        "icon": "fa-shirt",
-        "tip": "Har oyda bir marta mashinani kirsiz, 90 gradus haroratda ichiga ozgina limon kislotasi solib bo'sh yuvdirib yuboring."
-    },
-    {
-        "id": 5,
-        "title": "Smartfon batareyasini 100% gacha zaryadlamang",
-        "category": "Gadjetlar",
-        "icon": "fa-battery-half",
-        "tip": "Akkumulyator uzoq xizmat qilishi uchun uni doim 80-85% gacha quvvatlab, 20% dan pastga tushirmaslikka harakat qiling."
-    },
-    {
-        "id": 6,
-        "title": "Televizor yoki routerni tokdan himoya qilish",
-        "category": "Elektr",
-        "icon": "fa-bolt",
-        "tip": "Tok kuchlanishi keskin o'zgarganda qimmatbaho texnikalaringiz yonib ketmasligi uchun albatta sifatli stabilizator yoki rezinaviy tarmoq filtridan foydalaning."
+        "id": 2, "title": "Konditsioner yomon sovutyaptimi?", "category": "Konditsionerlar", "icon": "fa-snowflake",
+        "tip": "Ichki blok havo filtrlarini har oyda bir marta iliq suvda yuvib turing."
     }
 ]
 
