@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Biz haqimizda va Maxfiylik - UstaGo</title>
+    <title>Biz haqimizda va Bog'lanish - UstaGo</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
@@ -28,7 +28,8 @@
         </div>
     </header>
 
-    <main class="max-w-4xl mx-auto px-6 py-10 flex-1 w-full">
+    <main class="max-w-4xl mx-auto px-6 py-10 flex-1 w-full space-y-6">
+        <!-- Biz haqimizda kartasi -->
         <div class="bg-white rounded-2xl border border-slate-200 p-8 space-y-6 shadow-sm">
             <div class="border-b border-slate-100 pb-4">
                 <h1 class="text-2xl font-extrabold text-slate-900">UstaGo Platformasi Haqida</h1>
@@ -47,10 +48,49 @@
                 </ul>
             </div>
         </div>
+
+        <!-- Biz bilan bog'lanish va Telegram qismi -->
+        <div class="bg-white rounded-2xl border border-slate-200 p-8 space-y-4 shadow-sm">
+            <div class="border-b border-slate-100 pb-3">
+                <h2 class="text-lg font-extrabold text-slate-900">📞 Biz bilan bog'lanish</h2>
+                <p class="text-xs text-slate-500 mt-0.5">Taklif, shikoyat yoki hamkorlik uchun admin bilan bog'laning</p>
+            </div>
+
+            <div class="flex flex-col sm:flex-row items-center gap-3 pt-2">
+                <!-- Telegram akkauntga o'tish tugmasi -->
+                <a href="https://t.me/tokhirov0777" target="_blank" class="w-full sm:w-auto bg-sky-500 hover:bg-sky-600 text-white font-bold py-2.5 px-5 rounded-xl text-xs transition flex items-center justify-center gap-2 shadow-sm">
+                    <i class="fa-brands fa-telegram text-base"></i> Telegramda yozish (@tokhirov0777)
+                </a>
+
+                <!-- Username'ni nusxalash tugmasi -->
+                <button onclick="copyUsername()" class="w-full sm:w-auto bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-2.5 px-5 rounded-xl text-xs transition flex items-center justify-center gap-2 border border-slate-200 shadow-sm">
+                    <i class="fa-regular fa-copy"></i> Username'ni nusxalash (@tokhirov0777)
+                </button>
+            </div>
+        </div>
     </main>
 
-    <footer class="bg-white border-t border-slate-200 py-4 text-center text-xs text-slate-400">
+    <!-- Toast Xabarnoma -->
+    <div id="toast" class="fixed bottom-5 right-5 bg-slate-900 text-white text-xs px-4 py-2.5 rounded-xl shadow-xl transition-all duration-300 transform translate-y-20 opacity-0 z-50 flex items-center gap-2">
+        <i class="fa-solid fa-circle-check text-emerald-400"></i>
+        <span id="toast-text">Username nusxalandi!</span>
+    </div>
+
+    <footer class="bg-white border-t border-slate-200 py-4 text-center text-xs text-slate-400 mt-6">
         <p>&copy; 2026 UstaGo Platformasi. Barcha huquqlar himoyalangan.</p>
     </footer>
+
+    <script>
+        function copyUsername() {
+            const username = "@tokhirov0777";
+            navigator.clipboard.writeText(username).then(() => {
+                const toast = document.getElementById('toast');
+                toast.classList.remove('translate-y-20', 'opacity-0');
+                setTimeout(() => {
+                    toast.classList.add('translate-y-20', 'opacity-0');
+                }, 2500);
+            });
+        }
+    </script>
 </body>
 </html>
