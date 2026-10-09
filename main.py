@@ -94,7 +94,7 @@ TECHNICIANS_DB = [
     }
 ]
 
-# Kengaytirilgan Blog Maqolalari Bazasi
+# Kengaytirilgan Blog va Qo'llanmalar Bazasi (5 ta maqola)
 ARTICLES_DB = [
     {
         "id": 1,
@@ -119,6 +119,22 @@ ARTICLES_DB = [
         "date": "2026-09-28",
         "read_time": "6 daqiqa",
         "content": "Internet tezligi pastligidan shikoyat qilyapsizmi? Ko'pincha buning sababi routerning uyning chekka xonasida yoki temir-beton devorlar ortida turganidadir. Routerni uyning markaziy qismiga, balandroq joyga o'rnatish signallarning bir tekis tarqalishini ta'minlaydi. Shuningdek, mikroto'lqinli pechlar va ko'zgu oynalar Wi-Fi signalini to'sishi mumkinligini unutmang."
+    },
+    {
+        "id": 4,
+        "title": "Kir yuvish mashinasi titrashi va shovqin qilishining asosiy sabablari",
+        "category": "Maishiy texnika",
+        "date": "2026-09-20",
+        "read_time": "5 daqiqa",
+        "content": "Kir yuvish mashinasi siqish rejimida kuchli sakray boshlasa yoki g'ichirlasa, bu e'tiborsiz qoldirib bo'lmaydigan signaldir. Birinchi navbatda barabandagi kirlar teng taqsimlanganiga va mashinaning oyoqlari tekis turganiga e'tibor bering. Shuningdek, transport boltlarining yechilgani va amotizatorlarning holati ham muhim rol o'ynaydi."
+    },
+    {
+        "id": 5,
+        "title": "Videokuzatuv kameralarini o'rnatishda nimalarga e'tibor berish kerak?",
+        "category": "Xavfsizlik",
+        "date": "2026-09-15",
+        "read_time": "7 daqiqa",
+        "content": "Uy yoki ofis xavfsizligini ta'minlash uchun videokuzatuv kameralari eng yaxshi yechimdir. Kamerani o'rnatishda uning ko'rish burchagi kengligiga, qorong'ida ham yaxshi ko'rsatishiga (IK-yoritish) hamda internet tarmoqlariga barqaror ulanishiga alohida e'tibor qaratish lozim."
     }
 ]
 
