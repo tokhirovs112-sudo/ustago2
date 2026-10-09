@@ -94,47 +94,49 @@ TECHNICIANS_DB = [
     }
 ]
 
-# Kengaytirilgan Blog va Qo'llanmalar Bazasi (5 ta maqola)
-ARTICLES_DB = [
+# Quick Tips (Tezkor maslahatlar) Bazasi
+QUICK_TIPS_DB = [
     {
         "id": 1,
-        "title": "Smartfon akkumulyatorini to'g'ri quvvatlash va uning muddatini uzaytirish sirlari",
+        "title": "Telefoningiz tez qizib ketyaptimi?",
         "category": "Gadjetlar",
-        "date": "2026-10-08",
-        "read_time": "5 daqiqa",
-        "content": "Bugungi kunda smartfonlar hayotimizning ajralmas qismiga aylandi. Ularning eng nozik joylaridan biri bu — akkumulyator (batareya). Batareya quvvati tez tugashi ko'pchilikning muammosi. Uni to'g'ri quvvatlash uchun quyidagi qoidalarga amal qilish lozim: Telefoningizni doimiy ravishda 0% gacha o'chirib qo'ymang, optimal quvvat oralig'i 20% dan 80% gacha hisoblanadi. Tunda zaryadga qo'yib uxlash batareya resursini qisqartiradi. Shuningdek, faqat original adapter va kabellardan foydalanish telefoningizni ortiqcha qizishdan saqlaydi."
+        "icon": "fa-mobile-screen-button",
+        "tip": "Og'ir o'yinlar yoki ilovalardan so'ng telefoningiz qizisa, uni g'ilofidan (chexolidan) chiqarib turing va quyosh nuri tushmaydigan salqin joyga qo'ying."
     },
     {
         "id": 2,
-        "title": "Konditsionerga o'z vaqtida texnik xizmat ko'rsatish nima uchun muhim?",
-        "category": "Iqlim texnikasi",
-        "date": "2026-10-05",
-        "read_time": "4 daqiqa",
-        "content": "Konditsionerlar yozda salqinlik, qishda iliqlik baxsh etadi. Ammo ularga o'z vaqtida texnik xizmat ko'rsatilmasa, ichki filtrlar chang bilan to'lib, havo aylanishi buziladi va freon (sovutish gazi) kamayib ketadi. Natijada kompressor ortiqcha yuklama bilan ishlab, ishdan chiqishi mumkin. Har mavsum boshlanishidan oldin ichki filtrlarni tozalash va malakali ustaga freon bosimini tekshirtirish tavsiya etiladi."
+        "title": "Konditsioner yomon sovutyaptimi?",
+        "category": "Iqlim",
+        "icon": "fa-snowflake",
+        "tip": "Ko'pincha sabab oddiy: ichki blok havo filtrlarida chang to'lib qolgan bo'ladi. Ularni har oyda bir marta iliq suvda yuvib quritib taqib qo'ying."
     },
     {
         "id": 3,
-        "title": "Uyda Wi-Fi internet tezligini oshirish va routerni to'g'ri joylashtirish",
+        "title": "Wi-Fi internet sekin ishlayotgan bo'lsa",
         "category": "Tarmoqlar",
-        "date": "2026-09-28",
-        "read_time": "6 daqiqa",
-        "content": "Internet tezligi pastligidan shikoyat qilyapsizmi? Ko'pincha buning sababi routerning uyning chekka xonasida yoki temir-beton devorlar ortida turganidadir. Routerni uyning markaziy qismiga, balandroq joyga o'rnatish signallarning bir tekis tarqalishini ta'minlaydi. Shuningdek, mikroto'lqinli pechlar va ko'zgu oynalar Wi-Fi signalini to'sishi mumkinligini unutmang."
+        "icon": "fa-wifi",
+        "tip": "Routerni har hafta 10 soniyaga tokdan o'chirib yoqing (pereczerka). Bu uning xotirasini tozalab, tezligini tiklaydi."
     },
     {
         "id": 4,
-        "title": "Kir yuvish mashinasi titrashi va shovqin qilishining asosiy sabablari",
+        "title": "Kir yuvish mashinasidan yoqimsiz hid kelsa",
         "category": "Maishiy texnika",
-        "date": "2026-09-20",
-        "read_time": "5 daqiqa",
-        "content": "Kir yuvish mashinasi siqish rejimida kuchli sakray boshlasa yoki g'ichirlasa, bu e'tiborsiz qoldirib bo'lmaydigan signaldir. Birinchi navbatda barabandagi kirlar teng taqsimlanganiga va mashinaning oyoqlari tekis turganiga e'tibor bering. Shuningdek, transport boltlarining yechilgani va amotizatorlarning holati ham muhim rol o'ynaydi."
+        "icon": "fa-shirt",
+        "tip": "Har oyda bir marta mashinani kirsiz, 90 gradus haroratda ichiga ozgina limon kislotasi (limonnaya kislota) solib bo'sh yuvdirib yuboring."
     },
     {
         "id": 5,
-        "title": "Videokuzatuv kameralarini o'rnatishda nimalarga e'tibor berish kerak?",
-        "category": "Xavfsizlik",
-        "date": "2026-09-15",
-        "read_time": "7 daqiqa",
-        "content": "Uy yoki ofis xavfsizligini ta'minlash uchun videokuzatuv kameralari eng yaxshi yechimdir. Kamerani o'rnatishda uning ko'rish burchagi kengligiga, qorong'ida ham yaxshi ko'rsatishiga (IK-yoritish) hamda internet tarmoqlariga barqaror ulanishiga alohida e'tibor qaratish lozim."
+        "title": "Smartfon batareyasini 100% gacha zaryadlamang",
+        "category": "Gadjetlar",
+        "icon": "fa-battery-half",
+        "tip": "Akkumulyator uzoq xizmat qilishi uchun uni doim 80-85% gacha quvvatlab, 20% dan pastga tushirmaslikka harakat qiling."
+    },
+    {
+        "id": 6,
+        "title": "Televizor yoki routerni tokdan himoya qilish",
+        "category": "Elektr",
+        "icon": "fa-bolt",
+        "tip": "Tok kuchlanishi keskin o'zgarganda qimmatbaho texnikalaringiz yonib ketmasligi uchun albatta sifatli stabilizator yoki rezinaviy tarmoq filtridan foydalaning."
     }
 ]
 
@@ -148,11 +150,12 @@ async def about_page(request: Request):
 
 @app.get("/blog")
 async def blog_page(request: Request):
-    return templates.TemplateResponse(request, "blog.html", {"request": request, "articles": ARTICLES_DB})
+    return templates.TemplateResponse(request, "blog.html", {"request": request, "tips": QUICK_TIPS_DB})
 
 @app.get("/blog/{article_id}")
 async def article_detail(request: Request, article_id: int):
-    article = next((a for a in ARTICLES_DB if a["id"] == article_id), None)
+    # Agar eski article_id bo'yicha kirishsa, Quick Tip ma'lumotini ochib beramiz
+    article = next((a for a in QUICK_TIPS_DB if a["id"] == article_id), QUICK_TIPS_DB[0])
     return templates.TemplateResponse(request, "article.html", {"request": request, "article": article})
 
 @app.get("/api/technicians")
