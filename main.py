@@ -19,7 +19,6 @@ app = FastAPI(title="UstaGo Platformasi", debug=True)
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
-
 templates.env.undefined = SilentUndefined
 
 WEBHOOK_HOST = "https://ustagoorg.onrender.com"
@@ -29,7 +28,6 @@ WEBHOOK_URL = f"{WEBHOOK_HOST}{WEBHOOK_PATH}"
 @app.on_event("startup")
 async def on_startup():
     await bot.set_webhook(WEBHOOK_URL)
-    print(f"Webhook o'rnatildi: {WEBHOOK_URL}")
 
 @app.on_event("shutdown")
 async def on_shutdown():
@@ -43,7 +41,6 @@ async def bot_webhook(request: Request):
     await dp.feed_update(bot, update)
     return {"status": "ok"}
 
-# O'zbekiston hududlari
 REGIONS_DB = [
     "Toshkent shahri",
     "Toshkent viloyati",
@@ -62,28 +59,21 @@ REGIONS_DB = [
 ]
 
 CATEGORIES_DB = {
+    "Telefon va Gadjetlar": {
+        "services": ["Telefon ekranini almashtirish", "Akkumulyator almashtirish", "Smartfon ta'miri"]
+    },
     "Xavfsizlik va tarmoqlar": {
-        "icon": "Shield",
         "services": ["Kamera o'rnatish", "Wi-Fi router sozlash"]
     },
     "Iqlim texnikasi": {
-        "icon": "Wind",
         "services": ["Konditsioner o'rnatish va sozlash"]
     },
     "Maishiy texnika": {
-        "icon": "Wrench",
         "services": ["Kir yuvish mashinasi ta'miri"]
     }
 }
 
-SERVICES_DB = [
-    {"name": "Kamera o'rnatish", "category": "Xavfsizlik va tarmoqlar", "description": "Videokuzatuv kameralarini o'rnatish va sozlash"},
-    {"name": "Wi-Fi router sozlash", "category": "Xavfsizlik va tarmoqlar", "description": "Wi-Fi routerni ulash va internetni sozlash"},
-    {"name": "Konditsioner o'rnatish va sozlash", "category": "Iqlim texnikasi", "description": "Konditsionerlarni montaj qilish va ta'mirlash"},
-    {"name": "Kir yuvish mashinasi ta'miri", "category": "Maishiy texnika", "description": "Kir yuvish mashinalarini sifatli ta'mirlash"}
-]
-
-# Real ustalar va batafsil tavsiflar (OLX uslubidagi e'lonlar uchun)
+# Barcha ustalar bazasi (Yangi "OYNACHI" servisi ham qo'shildi)
 TECHNICIANS_DB = [
     {
         "id": 1,
@@ -93,7 +83,7 @@ TECHNICIANS_DB = [
         "region": "Toshkent shahri",
         "rating": 5.0,
         "reviews_count": 31,
-        "phone": "+998 99 642 06 70",
+        "phone": "+998996420670",
         "price": "Kelishilgan holda",
         "is_real": True,
         "description": "Malakali mutaxassis. Xonadonlar, office va obyektlarga zamonaviy videokuzatuv kameralarini sifatli o'rnatish, tarmoqqa ulash va telefon orqali kuzatishni sozlab berish xizmatini ko'rsataman."
@@ -106,10 +96,10 @@ TECHNICIANS_DB = [
         "region": "Toshkent shahri",
         "rating": 4.9,
         "reviews_count": 24,
-        "phone": "+998 99 888 08 02",
+        "phone": "+998998880802",
         "price": "Kelishilgan holda",
         "is_real": True,
-        "description": "Wi-Fi routerlar va internet tarmoqlari bo'yicha mutaxassis. Routerni to'g'ri o'rnatish, Wi-Fi zonasini kengaytirish, tezlikni optimallashtirish va internet uzilishlarini bartaraf etaman."
+        "description": "Wi-Fi routerlar va internet tarmoqlari bo'yicha mutaxassis. Routerni to'g'ri o'rnatish, Wi-Fi zonasini kengaytirish va internet uzilishlarini bartaraf etaman."
     },
     {
         "id": 3,
@@ -119,7 +109,7 @@ TECHNICIANS_DB = [
         "region": "Toshkent shahri",
         "rating": 4.8,
         "reviews_count": 19,
-        "phone": "+998 94 504 09 99",
+        "phone": "+998945040999",
         "price": "Kelishilgan holda",
         "is_real": True,
         "description": "Konditsionerlarni professional darajada o'rnatish (montaj), tozalash, freon quyish va texnik xizmat ko'rsatish ishlarini tez va kafolatli bajaramiz."
@@ -132,7 +122,7 @@ TECHNICIANS_DB = [
         "region": "Toshkent shahri",
         "rating": 5.0,
         "reviews_count": 40,
-        "phone": "+998 90 912 31 61",
+        "phone": "+998909123161",
         "price": "Kelishilgan holda",
         "is_real": True,
         "description": "Videokuzatuv va xavfsizlik tizimlarini o'rnatish bo'yicha tajribali usta. Istalgan turdagi kameralarni tez va sifatli o'rnatib beraman."
@@ -145,36 +135,29 @@ TECHNICIANS_DB = [
         "region": "Toshkent shahri",
         "rating": 4.9,
         "reviews_count": 27,
-        "phone": "+998 90 353 91 08",
+        "phone": "+998903539108",
         "price": "Kelishilgan holda",
         "is_real": True,
         "description": "Barcha turdagi kir yuvish mashinalarini uyingizga kelib malakali ta'mirlash. Diagnostika va ehtiyot qismlarini almashtirish kafolati bilan."
+    },
+    {
+        "id": 6,
+        "name": "Ismoilov Baxodir (OYNACHI)",
+        "job": "Telefon ekran va akkumulyator almashtirish",
+        "category": "Telefon va Gadjetlar",
+        "region": "Toshkent shahri",
+        "rating": 5.0,
+        "reviews_count": 64,
+        "phone": "+998991405555",
+        "price": "Kelishilgan holda",
+        "is_real": True,
+        "description": "OYNACHI servis markazi. iPhone, Samsung, Huawei, Xiaomi va boshqa barcha turdagi smartfonlarga ekran, shisha va akkumulyator almashtirish (180 kun kafolat). Batareya foizi 100% ko'rsatiladi. Ish vaqti: 10:00 dan 20:00 gacha, dam olish kunisiz."
     }
 ]
 
 @app.get("/")
 async def home(request: Request):
-    return templates.TemplateResponse(
-        request, 
-        "index.html", 
-        {
-            "request": request, 
-            "regions": REGIONS_DB,
-            "services": SERVICES_DB,
-            "categories": CATEGORIES_DB,
-            "districts": REGIONS_DB,
-            "reviews_db": []
-        }
-    )
-
-@app.get("/api/services")
-async def get_services(query: str = "", category: str = ""):
-    if category and category in CATEGORIES_DB:
-        return [{"name": s} for s in CATEGORIES_DB[category]["services"]]
-    if not query:
-        return SERVICES_DB
-    filtered = [s for s in SERVICES_DB if query.lower() in s["name"].lower() or query.lower() in s["description"].lower()]
-    return filtered
+    return templates.TemplateResponse(request, "index.html", {"request": request, "regions": REGIONS_DB, "categories": CATEGORIES_DB})
 
 @app.get("/api/technicians")
 async def get_technicians(job: str = "", region: str = "", category: str = ""):
@@ -183,13 +166,11 @@ async def get_technicians(job: str = "", region: str = "", category: str = ""):
         result = [t for t in result if t.get("category") == category]
     if job:
         result = [t for t in result if job.lower() in t["job"].lower()]
-    if region and region != "Barcha hududlar" and region != "Barchasi (Hudud bo'yicha)":
+    if region and region != "Barcha hududlar":
         result = [t for t in result if region.lower() in t["region"].lower()]
     return result
 
-@app.get("/api/search")
-async def search_jobs(query: str = ""):
-    if not query:
-        return SERVICES_DB
-    matched = [s for s in SERVICES_DB if query.lower() in s["name"].lower()]
-    return matched
+@app.get("/technician/{tech_id}")
+async def technician_detail(request: Request, tech_id: int):
+    tech = next((t for t in TECHNICIANS_DB if t["id"] == tech_id), None)
+    return templates.TemplateResponse(request, "detail.html", {"request": request, "tech": tech})
