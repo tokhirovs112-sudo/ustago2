@@ -9,7 +9,7 @@
 </head>
 <body class="bg-[#F8F9FA] text-slate-800 antialiased min-h-screen flex flex-col justify-between">
 
-    <!-- Header (Handypal uslubida toza va minimalist) -->
+    <!-- Header -->
     <header class="bg-white border-b border-slate-200 sticky top-0 z-40">
         <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
             <a href="/" class="flex items-center space-x-3">
@@ -22,12 +22,11 @@
                 </div>
             </a>
 
-            <!-- Navigatsiya -->
+            <!-- Tozalangan Navigatsiya -->
             <nav class="hidden md:flex items-center space-x-8 text-sm font-medium text-slate-600">
                 <a href="/" class="text-amber-600 font-semibold">Bosh sahifa</a>
-                <a href="#" class="hover:text-amber-600 transition">Xizmatlarni topish</a>
-                <a href="#" class="hover:text-amber-600 transition">Biz haqimizda</a>
-                <a href="#" class="hover:text-amber-600 transition">Blog</a>
+                <button onclick="openAboutModal()" class="hover:text-amber-600 transition text-left font-medium">Biz haqimizda</button>
+                <button onclick="openBlogModal()" class="hover:text-amber-600 transition text-left font-medium">Blog & Qo'llanma</button>
             </nav>
 
             <div class="flex items-center space-x-3">
@@ -42,10 +41,9 @@
         </div>
     </header>
 
-    <!-- Main Container (2 ustunli dizayn: Chapda filtrlar, o'ngda xizmatlar) -->
+    <!-- Main Container -->
     <main class="max-w-7xl mx-auto px-6 py-8 flex-1 w-full">
         
-        <!-- Breadcrumb -->
         <div class="text-xs text-slate-400 mb-6 flex items-center gap-2">
             <span>Bosh sahifa</span>
             <i class="fa-solid fa-chevron-right text-[9px]"></i>
@@ -61,7 +59,6 @@
                     <button onclick="resetFilters()" class="text-xs text-amber-600 hover:underline">Tozalash</button>
                 </div>
 
-                <!-- Qabul qilish holati (Toggle) -->
                 <div class="flex items-center justify-between">
                     <span class="text-xs text-slate-600 font-medium">Yangi buyurtmalarni olish</span>
                     <label class="relative inline-flex items-center cursor-pointer">
@@ -70,7 +67,6 @@
                     </label>
                 </div>
 
-                <!-- Kategoriyalar ro'yxati (Radio buttonlar) -->
                 <div class="space-y-3">
                     <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider">Kategoriyalar</h4>
                     <div class="space-y-2 text-xs text-slate-600">
@@ -87,7 +83,6 @@
                     </div>
                 </div>
 
-                <!-- Hudud (Location) -->
                 <div class="space-y-2 pt-3 border-t border-slate-100">
                     <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider">Hudud</h4>
                     <select id="top-region-select" onchange="filterByCategoryAndRegion()" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-xs text-slate-700 outline-none focus:border-amber-500">
@@ -99,10 +94,9 @@
                 </div>
             </aside>
 
-            <!-- O'NG TOMON: Qidiruv, Sort va Kartochkalar -->
+            <!-- O'NG TOMON -->
             <div class="lg:col-span-3 space-y-6">
                 
-                <!-- Qidiruv va Sort qatori -->
                 <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
                     <div class="relative w-full sm:w-96">
                         <i class="fa-solid fa-magnifying-glass absolute left-4 top-3.5 text-slate-400 text-sm"></i>
@@ -119,13 +113,11 @@
                     </div>
                 </div>
 
-                <!-- Sarlavha -->
                 <div class="flex justify-between items-center">
                     <h2 class="text-lg font-bold text-slate-900">Ishonchli uy va texnika ta'mirlash xizmatlari</h2>
                     <span class="text-xs text-slate-400" id="results-count">Ko'rsatilmoqda</span>
                 </div>
 
-                <!-- Ustalar / Xizmatlar Grid (Kartochkalar) -->
                 <div id="technicians-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                     <!-- Dinamik to'ldiriladi -->
                 </div>
@@ -134,7 +126,57 @@
         </div>
     </main>
 
-    <!-- MODAL: Chat / Buyurtma yuborish -->
+    <!-- MODAL: Biz haqimizda va Maxfiylik siyosati -->
+    <div id="about-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[85vh] flex flex-col shadow-2xl overflow-hidden border border-slate-100">
+            <div class="p-4 bg-slate-50 border-b border-slate-100 flex justify-between items-center">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-circle-info text-amber-600"></i>
+                    <h3 class="font-bold text-slate-800 text-base">UstaGo haqida va Maxfiylik Siyosati</h3>
+                </div>
+                <button onclick="closeAboutModal()" class="text-slate-400 hover:text-slate-600">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            <div class="p-6 overflow-y-auto space-y-4 text-xs text-slate-600 leading-relaxed">
+                <h4 class="font-bold text-slate-900 text-sm">🌐 UstaGo Platformasi nima?</h4>
+                <p>UstaGo — O'zbekistonda uy-joy, maishiy texnika, kamera o'rnatish va tarmoq xizmatlari bo'yicha professional ustalarni mijozlar bilan bog'lovchi yetakchi onlayn platformadir. Bizning maqsadimiz — har bir fuqaroga tezkor, xavfsiz va ishonchli mutaxassislarni topishda ko'maklashish.</p>
+                
+                <h4 class="font-bold text-slate-900 text-sm pt-2">🔒 Maxfiylik Siyosati (Privacy Policy)</h4>
+                <p>Foydalanuvchilarimizning shaxsiy ma'lumotlari (telefon raqamlari, ismlari va yuborgan xabarlari) qat'iy ravishda himoyalanadi. Biz sizning ma'lumotlaringizni uchinchi shaxslarga bermaymiz. Barcha yozishmalar va buyurtma tafsilotlari faqatgina mijoz va usta o'rtasidagi aloqani yaxshilash uchun ishlatiladi.</p>
+
+                <h4 class="font-bold text-slate-900 text-sm pt-2">⭐ Real Usta Kafolati</h4>
+                <p>Platformamizdagi barcha ustalar maxsus tekshiruvdan o'tgan bo'lib, ularning reytingi va qoldirgan sharhlari real mijozlarning baholari asosida shakllanadi.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: Blog va Qo'llanma -->
+    <div id="blog-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-xl w-full max-h-[85vh] flex flex-col shadow-2xl overflow-hidden border border-slate-100">
+            <div class="p-4 bg-slate-50 border-b border-slate-100 flex justify-between items-center">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-blog text-amber-600"></i>
+                    <h3 class="font-bold text-slate-800 text-base">Foydali Maqolalar va Qo'llanmalar</h3>
+                </div>
+                <button onclick="closeBlogModal()" class="text-slate-400 hover:text-slate-600">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            <div class="p-6 overflow-y-auto space-y-4 text-xs text-slate-600 leading-relaxed">
+                <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-1">
+                    <h5 class="font-bold text-slate-900">1. Wi-Fi routerni to'g'ri joylashtirish sirlari</h5>
+                    <p>Uyda internet tezligi yaxshi ishlashi uchun routerni uyning markaziga va balandroq joyga o'rnatish muhim...</p>
+                </div>
+                <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-1">
+                    <h5 class="font-bold text-slate-900">2. Konditsionerga qachon texnik xizmat ko'rsatish kerak?</h5>
+                    <p>Yozgi mavsum boshlanishidan oldin filtrlarini tozalash va freon darajasini tekshirish uning umrini uzaytiradi...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: Chat / Buyurtma -->
     <div id="chat-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-100 space-y-4">
             <div class="flex justify-between items-center border-b border-slate-100 pb-3">
@@ -264,6 +306,13 @@
             });
         }
 
+        // Modal funksiyalari
+        function openAboutModal() { document.getElementById('about-modal').classList.remove('hidden'); }
+        function closeAboutModal() { document.getElementById('about-modal').classList.add('hidden'); }
+
+        function openBlogModal() { document.getElementById('blog-modal').classList.remove('hidden'); }
+        function closeBlogModal() { document.getElementById('blog-modal').classList.add('hidden'); }
+
         function openChatModal(name) {
             currentActiveWorkerName = name;
             document.getElementById('chat-worker-name').innerText = `${name} bilan chat`;
@@ -352,7 +401,6 @@
             workers.forEach(w => {
                 html += `
                     <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition flex flex-col justify-between">
-                        <!-- Rasm o'rniga zamonaviy Header -->
                         <div class="bg-gradient-to-r from-slate-800 to-indigo-900 p-4 text-white relative">
                             <div class="flex justify-between items-start">
                                 <div>
@@ -363,7 +411,6 @@
                             </div>
                         </div>
 
-                        <!-- Ma'lumot qismi -->
                         <div class="p-4 space-y-3 flex-1 flex flex-col justify-between">
                             <div class="space-y-2">
                                 <p class="text-xs text-slate-600 line-clamp-2 leading-relaxed">
@@ -378,7 +425,6 @@
                                 </div>
                             </div>
 
-                            <!-- Narx va Tugmalar -->
                             <div class="pt-3 border-t border-slate-100 space-y-2.5">
                                 <div class="flex justify-between items-center">
                                     <span class="text-[11px] text-slate-400 font-medium">Xizmat narxi:</span>
