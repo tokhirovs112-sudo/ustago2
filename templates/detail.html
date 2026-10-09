@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ tech.name }} - UstaGo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-[#F8F9FA] text-slate-800 antialiased min-h-screen flex flex-col justify-between">
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-40">
+        <div class="max-w-4xl mx-auto px-6 py-4 flex items-center justify-between">
+            <a href="/" class="text-xs font-bold text-amber-600 flex items-center gap-1.5 hover:underline">
+                <i class="fa-solid fa-arrow-left"></i> Asosiy sahifaga qaytish
+            </a>
+            <span class="text-sm font-extrabold text-slate-900">UstaGo Profil</span>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-6 py-8 flex-1 w-full">
+        <div class="bg-white rounded-2xl border border-slate-200 p-6 space-y-6 shadow-sm">
+            <div class="flex justify-between items-start border-b border-slate-100 pb-4">
+                <div>
+                    <h1 class="text-xl font-extrabold text-slate-900">{{ tech.name }}</h1>
+                    <p class="text-sm font-semibold text-amber-600 mt-1">{{ tech.job }}</p>
+                </div>
+                {% if tech.is_real %}
+                <span class="bg-amber-100 text-amber-800 text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1">
+                    <i class="fa-solid fa-check-circle"></i> Real usta
+                </span>
+                {% endif %}
+            </div>
+
+            <div class="space-y-2">
+                <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider">To'liq ma'lumot va xizmat shartlari</h3>
+                <p class="text-sm text-slate-700 leading-relaxed bg-slate-50 p-4 rounded-xl border border-slate-100">
+                    {{ tech.description }}
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
+                <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-100">
+                    <span class="text-slate-400 block mb-0.5">Reyting:</span>
+                    <span class="font-bold text-slate-800 text-sm">⭐ {{ tech.rating }} ({{ tech.reviews_count }} ta sharh)</span>
+                </div>
+                <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-100">
+                    <span class="text-slate-400 block mb-0.5">Hudud:</span>
+                    <span class="font-bold text-slate-800 text-sm">📍 {{ tech.region }}</span>
+                </div>
+                <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-100">
+                    <span class="text-slate-400 block mb-0.5">Xizmat narxi:</span>
+                    <span class="font-bold text-slate-800 text-sm">💰 {{ tech.price }}</span>
+                </div>
+            </div>
+
+            <div class="pt-4 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div class="text-xs text-slate-600">
+                    Bog'lanish uchun telefon: <b class="text-emerald-600 text-sm ml-1">{{ tech.phone }}</b>
+                </div>
+                <a href="tel:{{ tech.phone }}" class="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 px-6 rounded-xl text-xs transition shadow-sm text-center">
+                    <i class="fa-solid fa-phone mr-1"></i> Qo'ng'iroq qilish
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-white border-t border-slate-200 py-4 text-center text-xs text-slate-400">
+        <p>&copy; 2026 UstaGo Platformasi. Barcha huquqlar himoyalangan.</p>
+    </footer>
+</body>
+</html>
